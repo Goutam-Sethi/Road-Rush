@@ -1,84 +1,291 @@
-.game {
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* --------------------
-   Start Screen
--------------------- */
-
-.start-screen {
-    text-align: center;
-    color: white;
-}
-
-.start-screen h1 {
-    font-size: 4rem;
-    letter-spacing: 8px;
-}
-
-.start-screen p {
-    margin: 20px 0;
-    font-size: 1.1rem;
-}
-
-.start-btn {
-    padding: 14px 30px;
-
-    font-size: 1rem;
-    font-weight: bold;
-
-    border-radius: 6px;
-}
-
-/* --------------------
-   Game Screen
--------------------- */
+/* HUD STYLING */
 
 .game-screen {
-    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .hud {
-    width: 500px;
-
-    padding: 15px;
-
+    width: 100%;
+    min-height: 70px;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
-
+    align-items: center;
     color: white;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%);
+    font-size: clamp(0.85rem, 3vw, 1.1rem);
+    border-bottom: 2px solid #ff6b6b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
+
+.hud-left,
+.hud-center,
+.hud-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hud-center {
+    flex: 1;
+    justify-content: center;
+}
+
+.score,
+.speed {
+    font-weight: bold;
+    font-size: clamp(0.95rem, 3vw, 1.2rem);
+    color: #ffd93d;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Lives Display */
+.lives-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lives-label {
+    color: #aaa;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lives {
+    display: flex;
+    gap: 6px;
+}
+
+.life {
+    width: 16px;
+    height: 16px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
+    transition: all 0.3s ease;
+}
+
+.life.lost {
+    background: #444;
+    box-shadow: none;
+}
+
+/* Pause Button */
+.pause-btn {
+    padding: 8px 14px;
+    background: rgba(76, 175, 255, 0.2);
+    border: 1px solid rgba(76, 175, 255, 0.5);
+    border-radius: 8px;
+    color: #4caff5;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pause-btn:hover {
+    background: rgba(76, 175, 255, 0.3);
+    border-color: rgba(76, 175, 255, 0.8);
+    transform: scale(1.05);
+}
+
+/* ROAD AND GAMEPLAY */
 
 .road {
     position: relative;
-
-    width: 500px;
-    height: 700px;
-
+    width: 100%;
+    height: min(75vh, 700px);
+    min-height: 450px;
     overflow: hidden;
-
-    background: #333;
+    background: #5aa63b;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+    flex: 1;
 }
 
-/* --------------------
-   Player
--------------------- */
+.road::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 68%;
+    transform: translateX(-50%);
+    background: #4a4a4a;
+    border-left: 2px solid rgba(255, 255, 255, 0.9);
+    border-right: 2px solid rgba(255, 255, 255, 0.9);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.road::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.lane-marking {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.95) 0,
+        rgba(255, 255, 255, 0.95) 22px,
+        transparent 22px,
+        transparent 46px
+    );
+    opacity: 0.95;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.lane-1 {
+    left: 33%;
+    transform: translateX(-50%);
+}
+
+.lane-2 {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.road-line {
+    display: none;
+}
+
+/* CARS */
+
+.player-car,
+.enemy-car {
+    position: absolute;
+    width: clamp(38px, 10%, 55px);
+    aspect-ratio: 5 / 9;
+    transform: translateX(-50%);
+    border-radius: 6px;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: left 0.1s ease-out;
+}
 
 .player-car {
+    bottom: 5%;
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    border: 2px solid #64b5f6;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5), 
+                0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.car-window {
     position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 70%;
+    height: 25%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(200, 230, 255, 0.6), rgba(100, 180, 255, 0.4));
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
-    width: 50px;
-    height: 90px;
+.enemy-car {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff3838 100%);
+    border: 2px solid #ff9999;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5), 
+                0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    bottom: 30px;
-    left: 225px;
+.enemy-car::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 70%;
+    height: 25%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(255, 200, 200, 0.6), rgba(255, 100, 100, 0.4));
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
-    border-radius: 8px;
+/* Collision animation */
+@keyframes carCollision {
+    0% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+}
 
-    background: #e63946;
+.player-car.collision {
+    animation: carCollision 0.4s ease;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 480px) {
+    .road {
+        height: 70vh;
+        min-height: 400px;
+    }
+    
+    .hud {
+        flex-direction: column;
+        gap: 10px;
+        min-height: auto;
+    }
+    
+    .hud-left,
+    .hud-center,
+    .hud-right {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .game {
+        padding: 10px;
+    }
+
+    .road {
+        min-height: 400px;
+        height: 75vh;
+    }
+
+    .hud {
+        min-height: 45px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .game {
+        padding: 5px;
+    }
+
+    .road {
+        min-height: 350px;
+    }
+
+    .player-car,
+    .enemy-car {
+        border-radius: 5px;
+    }
 }

@@ -4,44 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Road Rush</title>
-
+    <title>Road Rush - Home</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/game.css">
 </head>
 
 <body>
-
     <main class="game">
+        <section class="home-screen">
+            <div class="home-content">
+                <div class="logo-section">
+                    <h1 class="logo-title">ROAD RUSH</h1>
+                    <p class="logo-subtitle">Thrilling Car Racing Action</p>
+                </div>
 
-        <!-- Main Menu -->
-        <section class="start-screen">
-            <h1>ROAD RUSH</h1>
+                <div class="home-showcase">
+                    <div class="showcase-card">
+                        <span class="showcase-icon">🏎️</span>
+                        <h3>Fast-Paced Action</h3>
+                        <p>Test your reflexes in an intense racing experience</p>
+                    </div>
+                    <div class="showcase-card">
+                        <span class="showcase-icon">📊</span>
+                        <h3>Track Your Progress</h3>
+                        <p>Compete for the highest score and top speeds</p>
+                    </div>
+                    <div class="showcase-card">
+                        <span class="showcase-icon">📱</span>
+                        <h3>Play Anywhere</h3>
+                        <p>Desktop and mobile friendly controls</p>
+                    </div>
+                </div>
 
-            <p>Race. Dodge. Survive.</p>
+                <div class="home-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="all-time-high">0</span>
+                        <span class="stat-name">All-Time High</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="times-played">0</span>
+                        <span class="stat-name">Times Played</span>
+                    </div>
+                </div>
 
-            <button class="start-btn">START RACE</button>
-        </section>
+                <a href="game.html" class="play-btn">PLAY GAME</a>
 
-        <!-- Game Screen -->
-        <section class="game-screen hidden">
-
-            <div class="hud">
-                <span class="score">Score: 0</span>
-                <span class="speed">Speed: 0</span>
+                <div class="home-footer">
+                    <p>Use arrow keys or swipe to dodge traffic</p>
+                </div>
             </div>
-
-            <div class="road">
-                <div class="player-car"></div>
-            </div>
-
         </section>
-
     </main>
-
-    <script type="module" src="./js/main.js"></script>
-
 </body>
 
 </html>

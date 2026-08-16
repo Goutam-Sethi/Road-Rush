@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Rush - Game</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/game-play.css">
+</head>
+
+<body>
+    <main class="game">
+        <!-- GAME SCREEN -->
+        <section class="game-screen" id="gameScreen">
+            <div class="hud">
+                <div class="hud-left">
+                    <span class="score">Score: 0</span>
+                </div>
+                <div class="hud-center">
+                    <span class="speed">Speed: 5</span>
+                </div>
+                <div class="hud-right">
+                    <div class="lives-container">
+                        <span class="lives-label">Lives:</span>
+                        <div class="lives">
+                            <span class="life"></span>
+                            <span class="life"></span>
+                            <span class="life"></span>
+                        </div>
+                    </div>
+                    <button class="pause-btn" title="Pause game">⏸</button>
+                </div>
+            </div>
+
+            <div class="road">
+                <div class="lane-marking lane-1"></div>
+                <div class="lane-marking lane-2"></div>
+                <div class="player-car">
+                    <div class="car-window"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME OVER SCREEN -->
+        <section class="game-over-screen hidden" id="gameOverScreen">
+            <div class="game-over-content">
+                <h2>GAME OVER</h2>
+                <div class="game-stats">
+                    <div class="stat">
+                        <span class="stat-label">Final Score</span>
+                        <span class="final-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Distance</span>
+                        <span class="distance">0m</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Top Speed</span>
+                        <span class="top-speed">0</span>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="retry-btn" id="retryBtn">PLAY AGAIN</button>
+                    <button class="home-btn" id="homeBtn">HOME</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAUSE SCREEN -->
+        <section class="pause-screen hidden" id="pauseScreen">
+            <div class="pause-content">
+                <h2>PAUSED</h2>
+                <button class="resume-btn" id="resumeBtn">RESUME GAME</button>
+                <button class="quit-btn" id="quitBtn">QUIT TO HOME</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="./js/game-play.js"></script>
+</body>
+
+</html>
