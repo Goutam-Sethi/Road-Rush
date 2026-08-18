@@ -21,7 +21,6 @@ A fast-paced 2D arcade car racing game built entirely with **HTML5**, **CSS3**, 
 - [ ] Persistent LocalStorage Statistics *(Coming Soon)*
 - [ ] Car Garage & Customization *(Coming Soon)*
 - [ ] Procedural Web Audio Engine *(Coming Soon)*
-- [ ] Day/Night & Weather Cycles *(Coming Soon)*
 
 ---
 
@@ -37,7 +36,7 @@ A fast-paced 2D arcade car racing game built entirely with **HTML5**, **CSS3**, 
 
 1. Clone or download this repository:
    ```bash
-   git clone https://github.com/your-username/Road_Rush.git
+   git clone https://github.com/Goutam-Sethi/Road_Rush.git
    ```
 2. Open `index.html` directly in any modern web browser or serve via Live Server:
    ```bash
