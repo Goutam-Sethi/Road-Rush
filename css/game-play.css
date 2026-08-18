@@ -1,7 +1,9 @@
-/* GAME SCREEN */
+/* ROAD RUSH - GAMEPLAY & NITRO SYSTEM STYLES */
 
 body {
-    background: #7fbf42;
+    background: #5aa63b;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .game-screen {
@@ -11,24 +13,27 @@ body {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    background: #7fbf42;
+    background: #5aa63b;
 }
 
-/* HUD STYLING */
+/* ==========================================================================
+   HUD STYLING
+   ========================================================================== */
 
 .hud {
     width: 100%;
-    min-height: 70px;
-    padding: 15px 20px;
+    min-height: 64px;
+    padding: 8px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%);
-    font-size: clamp(0.85rem, 3vw, 1.1rem);
-    border-bottom: 2px solid #ff6b6b;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(180deg, #0d0e1c 0%, #15182e 100%);
+    border-bottom: 2px solid #ff4757;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     flex-shrink: 0;
+    z-index: 20;
+    gap: 10px;
 }
 
 .hud-left,
@@ -36,97 +41,217 @@ body {
 .hud-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .hud-center {
     flex: 1;
     justify-content: center;
+    max-width: 480px;
 }
 
-.hud-right {
-    flex-shrink: 0;
+.hud-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.score,
-.speed {
-    font-weight: bold;
-    font-size: clamp(0.95rem, 3vw, 1.2rem);
+.hud-label {
+    font-size: 0.75rem;
+    color: #9aa0a6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.score {
+    font-weight: 800;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #fff;
+    font-family: monospace, sans-serif;
+}
+
+.coins-badge {
+    background: rgba(255, 217, 61, 0.12);
+    border-color: rgba(255, 217, 61, 0.3);
+}
+
+.coin-icon {
+    font-size: 1.1rem;
+    animation: coinPulse 2s infinite ease-in-out;
+}
+
+.coins-count {
+    font-weight: 800;
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
     color: #ffd93d;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    white-space: nowrap;
+    font-family: monospace, sans-serif;
 }
 
-/* Lives Display */
+.speed-badge {
+    background: rgba(0, 229, 255, 0.1);
+    border-color: rgba(0, 229, 255, 0.25);
+}
+
+.speed {
+    font-weight: 800;
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    color: #00e5ff;
+    font-family: monospace, sans-serif;
+}
+
+/* ==========================================================================
+   NITRO GAUGE & BOOST BUTTON
+   ========================================================================== */
+
+.nitro-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 110px;
+    max-width: 220px;
+}
+
+.nitro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.nitro-label {
+    color: #00e5ff;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.nitro-percent {
+    color: #d1f7ff;
+    font-family: monospace, sans-serif;
+}
+
+.nitro-bar-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.nitro-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0072ff 0%, #00e5ff 70%, #fff 100%);
+    border-radius: 5px;
+    transition: width 0.15s ease-out;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+}
+
+.nitro-bar-fill.active-burning {
+    background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd93d 100%);
+    box-shadow: 0 0 12px #ff4b2b, 0 0 20px #ffd93d;
+    animation: flameStrobe 0.15s infinite alternate;
+}
+
+.nitro-action-btn {
+    padding: 6px 14px;
+    background: rgba(0, 229, 255, 0.15);
+    border: 1.5px solid rgba(0, 229, 255, 0.4);
+    border-radius: 8px;
+    color: #00e5ff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.nitro-action-btn.ready {
+    background: linear-gradient(135deg, #0072ff 0%, #00e5ff 100%);
+    color: #0d0e1c;
+    border-color: #00e5ff;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.7);
+    animation: readyPulse 1.2s infinite ease-in-out;
+}
+
+.nitro-action-btn.boosting {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    color: #ffffff;
+    border-color: #ffd93d;
+    box-shadow: 0 0 15px rgba(255, 75, 43, 0.9);
+    animation: flamePulse 0.3s infinite alternate;
+}
+
+/* ==========================================================================
+   LIVES & PAUSE BUTTON
+   ========================================================================== */
+
 .lives-container {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
+    gap: 6px;
 }
 
 .lives-label {
-    color: #aaa;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap;
+    color: #888;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
 .lives {
     display: flex;
-    gap: 6px;
-    flex-shrink: 0;
+    gap: 5px;
 }
 
 .life {
-    width: 16px;
-    height: 16px;
-    background: #ff6b6b;
+    width: 14px;
+    height: 14px;
+    background: #ff4757;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
+    box-shadow: 0 0 8px rgba(255, 71, 87, 0.8);
     transition: all 0.3s ease;
-    flex-shrink: 0;
 }
 
 .life.lost {
-    background: #444;
+    background: #333;
     box-shadow: none;
+    opacity: 0.4;
 }
 
-/* Pause Button */
 .pause-btn {
-    padding: 8px 14px;
-    background: rgba(76, 175, 255, 0.2);
-    border: 1px solid rgba(76, 175, 255, 0.5);
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    color: #4caff5;
-    font-size: 1.2rem;
+    color: #fff;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    transition: all 0.2s ease;
 }
 
 .pause-btn:hover {
-    background: rgba(76, 175, 255, 0.3);
-    border-color: rgba(76, 175, 255, 0.8);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.18);
 }
 
-/* ROAD AND GAMEPLAY */
+/* ==========================================================================
+   ROAD & GAME ENVIRONMENT
+   ========================================================================== */
 
 .road {
     position: relative;
     width: 100vw;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 64px);
     flex: 1;
     overflow: hidden;
     margin: 0;
     background: #5aa63b;
-    box-shadow: inset 0 0 0 0 transparent;
 }
 
 .road::before {
@@ -142,15 +267,6 @@ body {
     border-right: 2px solid rgba(255, 255, 255, 0.95);
     pointer-events: none;
     z-index: 1;
-}
-
-.road::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: transparent;
-    pointer-events: none;
-    z-index: 0;
 }
 
 .lane-marking {
@@ -181,11 +297,151 @@ body {
     transform: translateX(-50%);
 }
 
-.road-line {
-    display: none;
+/* Nitro speed warp effect */
+.speed-lines-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 229, 255, 0.08) 0px,
+        rgba(0, 229, 255, 0.08) 4px,
+        transparent 4px,
+        transparent 40px
+    );
 }
 
-/* CARS */
+.road.nitro-speed-mode .speed-lines-overlay {
+    opacity: 1;
+    animation: speedWarp 0.2s linear infinite;
+}
+
+/* ==========================================================================
+   COLLECTIBLES: COINS & NITRO
+   ========================================================================== */
+
+.collectible-coin {
+    position: absolute;
+    width: clamp(32px, 8vw, 42px);
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+    z-index: 4;
+    perspective: 500px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.coin-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff6a9, #ffd93d 50%, #f39c12 90%);
+    border: 2px solid #fff;
+    box-shadow: 0 0 14px rgba(255, 217, 61, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: coinSpin 1.4s infinite linear;
+}
+
+.coin-symbol {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #795548;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.collectible-nitro {
+    position: absolute;
+    width: clamp(34px, 8.5vw, 44px);
+    aspect-ratio: 1 / 1.4;
+    transform: translateX(-50%);
+    z-index: 4;
+    filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.8));
+    animation: nitroFloat 1s infinite alternate ease-in-out;
+}
+
+.nitro-bottle {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+    border-radius: 8px 8px 12px 12px;
+    border: 2px solid #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.5), 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.nitro-bottle::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    width: 45%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px 3px 0 0;
+    border: 1px solid #999;
+}
+
+.nitro-flame {
+    font-size: 0.9rem;
+    line-height: 1;
+    color: #ffd93d;
+}
+
+.nitro-text {
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.collectible-coin.collected,
+.collectible-nitro.collected {
+    transform: translateX(-50%) scale(1.4);
+    opacity: 0;
+    transition: all 0.2s ease-out;
+}
+
+/* ==========================================================================
+   FLOATING NOTIFICATIONS / POPUPS
+   ========================================================================== */
+
+.floating-pickup {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+    font-weight: 900;
+    letter-spacing: 1px;
+    pointer-events: none;
+    z-index: 15;
+    animation: floatUpFade 0.8s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.floating-pickup.coin-pickup {
+    color: #ffd93d;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.8), 0 2px 4px #000;
+}
+
+.floating-pickup.nitro-pickup {
+    color: #00e5ff;
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.9), 0 2px 4px #000;
+}
+
+.floating-pickup.smash-pickup {
+    color: #ff4757;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    text-shadow: 0 0 15px rgba(255, 71, 87, 1), 0 2px 4px #000;
+}
+
+/* ==========================================================================
+   CARS & NITRO EFFECTS
+   ========================================================================== */
 
 .player-car,
 .enemy-car {
@@ -203,8 +459,7 @@ body {
     bottom: 5%;
     background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
     border: 2px solid #64b5f6;
-    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5), 
-                0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .car-window {
@@ -219,11 +474,43 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Nitro Active Super State */
+.player-car.nitro-active {
+    box-shadow: 0 0 25px #00e5ff, 0 0 50px rgba(0, 229, 255, 0.8), 0 4px 15px rgba(0, 0, 0, 0.6);
+    border-color: #ffffff;
+    animation: carNitroVibrate 0.08s infinite alternate;
+}
+
+.exhaust-flames {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.player-car.nitro-active .exhaust-flames {
+    opacity: 1;
+}
+
+.flame {
+    width: 8px;
+    height: 18px;
+    background: linear-gradient(to bottom, #00e5ff 0%, #0072ff 60%, transparent 100%);
+    border-radius: 50% 50% 20% 20%;
+    filter: drop-shadow(0 0 8px #00e5ff);
+    animation: flameFlicker 0.1s infinite alternate;
+}
+
 .enemy-car {
     background: linear-gradient(135deg, #ff6b6b 0%, #ff3838 100%);
     border: 2px solid #ff9999;
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5), 
-                0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -242,26 +529,102 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Smashed Enemy Animation */
+.enemy-car.smashed {
+    animation: enemySmash 0.35s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+}
+
 /* Collision animation */
 @keyframes carCollision {
-    0% {
-        transform: translateX(-50%) scale(1);
-    }
-    50% {
-        transform: translateX(-50%) scale(1.05);
-    }
-    100% {
-        transform: translateX(-50%) scale(1);
-    }
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) scale(1); }
 }
 
 .player-car.collision {
     animation: carCollision 0.4s ease;
 }
 
-/* GAME OVER SCREEN */
+/* ==========================================================================
+   MOBILE TOUCH CONTROLS
+   ========================================================================== */
 
-.game-over-screen {
+.mobile-controls {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.steer-btn,
+.mobile-nitro-btn {
+    pointer-events: auto;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(13, 14, 28, 0.75);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.steer-btn:active {
+    background: rgba(30, 144, 255, 0.6);
+    border-color: #1e90ff;
+    transform: scale(0.92);
+}
+
+.mobile-nitro-btn {
+    width: auto;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    background: rgba(0, 229, 255, 0.2);
+    border-color: rgba(0, 229, 255, 0.5);
+    color: #00e5ff;
+}
+
+.mobile-nitro-btn.ready {
+    background: linear-gradient(135deg, #0072ff 0%, #00e5ff 100%);
+    color: #0d0e1c;
+    border-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
+}
+
+.mobile-nitro-btn.boosting {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    color: #fff;
+    border-color: #ffd93d;
+}
+
+@media (min-width: 768px) {
+    .mobile-controls {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   GAME OVER & MODAL SCREENS
+   ========================================================================== */
+
+.game-over-screen,
+.pause-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -275,52 +638,64 @@ body {
     animation: fadeIn 0.4s ease-in;
 }
 
-.game-over-content {
+.game-over-content,
+.pause-content {
     text-align: center;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     border: 2px solid #ff6b6b;
     border-radius: 20px;
-    padding: 40px;
-    max-width: 400px;
+    padding: 36px 30px;
+    max-width: 420px;
+    width: 90%;
     animation: scaleIn 0.5s ease-out;
 }
 
 .game-over-content h2 {
-    font-size: clamp(2.5rem, 10vw, 3.5rem);
-    margin-bottom: 30px;
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-bottom: 20px;
     color: #ff6b6b;
     letter-spacing: 4px;
 }
 
 .game-stats {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 30px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
 .stat {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 12px 8px;
     background: rgba(255, 107, 107, 0.1);
     border-radius: 10px;
 }
 
+.stat.highlight-stat {
+    grid-column: span 2;
+}
+
 .stat-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #aaa;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .final-score,
+.final-coins,
 .distance,
 .top-speed {
-    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-size: clamp(1.2rem, 3.5vw, 1.6rem);
     font-weight: bold;
     color: #ffd93d;
+}
+
+.final-score {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    color: #ffffff;
 }
 
 .button-group {
@@ -331,7 +706,9 @@ body {
 }
 
 .retry-btn,
-.home-btn {
+.home-btn,
+.resume-btn,
+.quit-btn {
     padding: 14px 25px;
     font-size: clamp(0.9rem, 2.5vw, 1rem);
     font-weight: bold;
@@ -341,13 +718,13 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
 }
 
 .retry-btn {
     background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
     color: white;
-    flex: 1;
-    min-width: 120px;
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
 
@@ -356,71 +733,47 @@ body {
     box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
 }
 
-.home-btn {
+.home-btn,
+.quit-btn {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    flex: 1;
-    min-width: 120px;
 }
 
-.home-btn:hover {
+.home-btn:hover,
+.quit-btn:hover {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* PAUSE SCREEN */
-
-.pause-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    animation: fadeIn 0.3s ease-in;
-}
-
 .pause-content {
-    text-align: center;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 2px solid #4caff5;
-    border-radius: 20px;
-    padding: 50px 40px;
-    animation: scaleIn 0.4s ease-out;
+    border-color: #4caff5;
 }
 
 .pause-content h2 {
-    font-size: clamp(2.5rem, 10vw, 3.5rem);
-    margin-bottom: 40px;
+    font-size: clamp(2.2rem, 8vw, 3rem);
+    margin-bottom: 20px;
     color: #4caff5;
     letter-spacing: 4px;
 }
 
-.resume-btn,
-.quit-btn {
-    display: block;
-    width: 100%;
-    padding: 16px 30px;
-    margin-bottom: 15px;
-    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-    font-weight: bold;
-    border: none;
+.pause-hints {
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    color: #ccc;
+    line-height: 1.6;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
     border-radius: 10px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
 }
 
 .resume-btn {
     background: linear-gradient(135deg, #4caff5 0%, #00d4ff 100%);
     color: white;
     box-shadow: 0 5px 15px rgba(76, 175, 255, 0.3);
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
 }
 
 .resume-btn:hover {
@@ -429,53 +782,88 @@ body {
 }
 
 .quit-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: block;
+    width: 100%;
 }
 
-.quit-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.5);
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+
+@keyframes coinSpin {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
 }
 
-/* RESPONSIVE */
+@keyframes nitroFloat {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(-6px); }
+}
 
-@media (max-width: 480px) {
-    .road {
-        height: 70vh;
-        min-height: 400px;
-    }
-    
+@keyframes floatUpFade {
+    0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    20% { opacity: 1; transform: translate(-50%, -15px) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -50px) scale(1); }
+}
+
+@keyframes carNitroVibrate {
+    0% { transform: translateX(-51%); }
+    100% { transform: translateX(-49%); }
+}
+
+@keyframes flameFlicker {
+    0% { height: 16px; opacity: 0.8; }
+    100% { height: 24px; opacity: 1; }
+}
+
+@keyframes readyPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(0, 229, 255, 1); transform: scale(1.03); }
+}
+
+@keyframes flamePulse {
+    0% { box-shadow: 0 0 12px rgba(255, 75, 43, 0.8); }
+    100% { box-shadow: 0 0 22px rgba(255, 217, 61, 1); }
+}
+
+@keyframes flameStrobe {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.4); }
+}
+
+@keyframes speedWarp {
+    0% { background-position-y: 0px; }
+    100% { background-position-y: 80px; }
+}
+
+@keyframes enemySmash {
+    0% { transform: translateX(-50%) scale(1) rotate(0deg); filter: brightness(3); }
+    100% { transform: translateX(-50%) translateY(-100px) scale(0.1) rotate(540deg); opacity: 0; }
+}
+
+@keyframes coinPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* ==========================================================================
+   RESPONSIVE QUERIES
+   ========================================================================== */
+
+@media (max-width: 640px) {
     .hud {
-        flex-wrap: wrap;
-        gap: 10px;
-        min-height: auto;
+        padding: 6px 10px;
     }
     
-    .hud-left,
-    .hud-center,
-    .hud-right {
-        width: 100%;
-        justify-content: center;
+    .hud-badge {
+        padding: 4px 8px;
     }
 
-    .game-over-content {
-        padding: 30px 20px;
-        margin: 20px;
+    .nitro-action-btn {
+        display: none; /* Mobile uses bottom nitro button */
     }
 
-    .game-stats {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .button-group {
-        flex-direction: column;
-    }
-
-    .retry-btn,
-    .home-btn {
-        min-width: 100%;
+    .nitro-container {
+        max-width: 150px;
     }
 }

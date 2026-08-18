@@ -1,10 +1,13 @@
 import { player } from "./player.js";
 import { enemyManager } from "./enemy.js";
+import { collectiblesManager } from "./collectibles.js";
 
 const game = {
     running: false,
     paused: false,
     score: 0,
+    coins: 0,
+    baseSpeed: 5,
     speed: 5,
     lives: 3,
     maxLives: 3,
@@ -34,6 +37,8 @@ const game = {
         this.paused = false;
 
         this.score = 0;
+        this.coins = 0;
+        this.baseSpeed = 5;
         this.speed = 5;
         this.lives = this.maxLives;
         this.topSpeed = 5;
@@ -45,6 +50,9 @@ const game = {
         enemyManager.clear();
         enemyManager.start();
 
+        collectiblesManager.clear();
+        collectiblesManager.start();
+
         this.animationId = requestAnimationFrame(
             this.loop.bind(this)
         );
@@ -54,6 +62,7 @@ const game = {
         this.running = false;
 
         enemyManager.stop();
+        collectiblesManager.stop();
 
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
@@ -62,11 +71,15 @@ const game = {
 
     pause() {
         this.paused = true;
+        collectiblesManager.stop();
+        enemyManager.stop();
     },
 
     resume() {
         this.paused = false;
         this.previousTime = performance.now();
+        collectiblesManager.start();
+        enemyManager.start();
         this.animationId = requestAnimationFrame(
             this.loop.bind(this)
         );
@@ -82,39 +95,67 @@ const game = {
             return;
         }
 
-        const deltaTime =
-            (currentTime - this.previousTime) / 1000;
-
+        const deltaTime = Math.min(0.1, (currentTime - this.previousTime) / 1000);
         this.previousTime = currentTime;
 
         this.update(deltaTime);
         this.render();
 
-        this.animationId =
-            requestAnimationFrame(
-                this.loop.bind(this)
-            );
+        this.animationId = requestAnimationFrame(
+            this.loop.bind(this)
+        );
     },
 
     update(deltaTime) {
-        player.update();
+        player.update(deltaTime);
+
+        // Calculate dynamic speed based on difficulty & nitro state
+        this.baseSpeed = 5 + (this.score / 400);
+        if (this.baseSpeed > 18) this.baseSpeed = 18;
+
+        const effectiveSpeed = player.isNitroActive 
+            ? this.baseSpeed * player.nitroSpeedMultiplier 
+            : this.baseSpeed;
+            
+        this.speed = effectiveSpeed;
+
+        if (this.speed > this.topSpeed) {
+            this.topSpeed = this.speed;
+        }
+
+        const road = document.querySelector(".road");
+        const roadHeight = road ? road.clientHeight : 600;
 
         this.updateRoad(deltaTime);
 
         enemyManager.update(
             this.speed,
-            document.querySelector(".road").clientHeight,
+            roadHeight,
             deltaTime
         );
 
-        this.score += deltaTime * this.speed;
+        collectiblesManager.update(
+            this.speed,
+            roadHeight,
+            deltaTime
+        );
 
-        this.speed = 5 + this.score / 500;
-        if (this.speed > 20) this.speed = 20;
+        // Collectibles collision check
+        collectiblesManager.checkCollisions(
+            player.element,
+            () => {
+                this.coins++;
+                this.score += 30;
+            },
+            () => {
+                player.addNitro(40);
+                this.score += 50;
+            }
+        );
 
-        if (this.speed > this.topSpeed) {
-            this.topSpeed = this.speed;
-        }
+        // Score accrual (2x multiplier in nitro)
+        const scoreMultiplier = player.isNitroActive ? 2.5 : 1.0;
+        this.score += deltaTime * this.speed * 2 * scoreMultiplier;
 
         this.checkCollisions();
     },
@@ -124,9 +165,8 @@ const game = {
     },
 
     checkCollisions() {
+        if (!player.element) return;
         const playerRect = player.element.getBoundingClientRect();
-        const road = document.querySelector(".road");
-        const roadRect = road.getBoundingClientRect();
 
         enemyManager.enemies.forEach((enemy, index) => {
             const enemyRect = enemy.element.getBoundingClientRect();
@@ -138,18 +178,48 @@ const game = {
     },
 
     isColliding(rect1, rect2) {
-        return !(rect1.right < rect2.left ||
-                 rect1.left > rect2.right ||
-                 rect1.bottom < rect2.top ||
-                 rect1.top > rect2.bottom);
+        const margin = 8;
+        return !(
+            rect1.right - margin < rect2.left + margin ||
+            rect1.left + margin > rect2.right - margin ||
+            rect1.bottom - margin < rect2.top + margin ||
+            rect1.top + margin > rect2.bottom - margin
+        );
     },
 
     handleCollision(enemy, index) {
+        if (player.isNitroActive) {
+            // Nitro Smash! Destroy enemy without losing life
+            enemy.element.classList.add("smashed");
+            this.score += 150;
+
+            const road = document.querySelector(".road");
+            const roadRect = road ? road.getBoundingClientRect() : { left: 0, top: 0 };
+            const enemyRect = enemy.element.getBoundingClientRect();
+            
+            collectiblesManager.showFloatingEffect(
+                "+150 SMASH!", 
+                enemyRect.left - roadRect.left + enemyRect.width / 2, 
+                enemyRect.top - roadRect.top, 
+                "smash-pickup"
+            );
+
+            setTimeout(() => {
+                enemy.element.remove();
+            }, 300);
+
+            enemyManager.enemies.splice(index, 1);
+            return;
+        }
+
+        // Standard crash
         this.lives--;
         player.element.classList.add("collision");
         
         setTimeout(() => {
-            player.element.classList.remove("collision");
+            if (player.element) {
+                player.element.classList.remove("collision");
+            }
         }, 400);
 
         enemy.element.remove();
@@ -163,36 +233,25 @@ const game = {
     gameOver() {
         this.running = false;
         enemyManager.stop();
+        collectiblesManager.stop();
 
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
         }
 
-        this.showGameOverScreen();
-    },
-
-    showGameOverScreen() {
-        const gameOverScreen = document.querySelector(".game-over-screen");
-        const gameScreen = document.querySelector(".game-screen");
-        
-        document.querySelector(".final-score").textContent = Math.floor(this.score);
-        document.querySelector(".distance").textContent = Math.floor(this.score / 10) + "m";
-        document.querySelector(".top-speed").textContent = Math.round(this.topSpeed);
-
-        gameScreen.classList.add("hidden");
-        gameOverScreen.classList.remove("hidden");
+        if (typeof this.showGameOverScreen === 'function') {
+            this.showGameOverScreen();
+        }
     },
 
     createRoadLines() {
         const road = this.roadElement || document.querySelector(".road");
+        if (!road) return;
 
         for (let i = 0; i < 7; i++) {
             const line = document.createElement("div");
-
             line.classList.add("road-line");
-
             line.style.top = `${i * 100}px`;
-
             road.appendChild(line);
 
             this.roadLines.push({
@@ -204,6 +263,7 @@ const game = {
 
     updateRoad(deltaTime) {
         const road = document.querySelector(".road");
+        if (!road) return;
         const roadHeight = road.clientHeight;
 
         this.roadOffset = (this.roadOffset + this.speed * 50 * deltaTime) % 80;
@@ -211,7 +271,6 @@ const game = {
 
         this.roadLines.forEach(line => {
             line.y += this.speed * 30 * deltaTime;
-
             if (line.y >= roadHeight) {
                 line.y -= roadHeight;
             }

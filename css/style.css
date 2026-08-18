@@ -118,9 +118,9 @@ body {
 
 .home-stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: min(100%, 500px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    width: min(100%, 650px);
     padding: 0 10px;
     animation: slideUp 0.8s ease-out 0.3s both;
 }

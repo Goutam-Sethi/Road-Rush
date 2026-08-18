@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Rush - Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Road Rush - Play</title>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/game-play.css">
 </head>
@@ -15,41 +15,83 @@
         <section class="game-screen" id="gameScreen">
             <div class="hud">
                 <div class="hud-left">
-                    <span class="score">Score: 0</span>
+                    <div class="hud-badge score-badge">
+                        <span class="hud-label">Score</span>
+                        <span class="score">0</span>
+                    </div>
+                    <div class="hud-badge coins-badge">
+                        <span class="coin-icon">🪙</span>
+                        <span class="coins-count">0</span>
+                    </div>
                 </div>
+
                 <div class="hud-center">
-                    <span class="speed">Speed: 5</span>
+                    <div class="nitro-container">
+                        <div class="nitro-header">
+                            <span class="nitro-label">⚡ NITRO</span>
+                            <span class="nitro-percent">50%</span>
+                        </div>
+                        <div class="nitro-bar-track">
+                            <div class="nitro-bar-fill" id="nitroBarFill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    <button class="nitro-action-btn" id="nitroActionBtn" title="Boost! (Space or Up Arrow)">
+                        ⚡ BOOST
+                    </button>
                 </div>
+
                 <div class="hud-right">
+                    <div class="hud-badge speed-badge">
+                        <span class="hud-label">Speed</span>
+                        <span class="speed">5</span>
+                    </div>
                     <div class="lives-container">
-                        <span class="lives-label">Lives:</span>
+                        <span class="lives-label">HP</span>
                         <div class="lives">
                             <span class="life"></span>
                             <span class="life"></span>
                             <span class="life"></span>
                         </div>
                     </div>
-                    <button class="pause-btn" title="Pause game">⏸</button>
+                    <button class="pause-btn" id="pauseBtn" title="Pause game">⏸</button>
                 </div>
             </div>
 
-            <div class="road">
+            <div class="road" id="roadElement">
+                <div class="speed-lines-overlay"></div>
                 <div class="lane-marking lane-1"></div>
                 <div class="lane-marking lane-2"></div>
-                <div class="player-car">
+                <div class="player-car" id="playerCar">
                     <div class="car-window"></div>
+                    <div class="exhaust-flames">
+                        <span class="flame flame-left"></span>
+                        <span class="flame flame-right"></span>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Mobile Steer Touch Controls -->
+            <div class="mobile-controls">
+                <button class="steer-btn steer-left" id="steerLeftBtn" aria-label="Steer Left">◀</button>
+                <button class="mobile-nitro-btn" id="mobileNitroBtn" aria-label="Activate Nitro">⚡ NITRO</button>
+                <button class="steer-btn steer-right" id="steerRightBtn" aria-label="Steer Right">▶</button>
             </div>
         </section>
 
         <!-- GAME OVER SCREEN -->
         <section class="game-over-screen hidden" id="gameOverScreen">
             <div class="game-over-content">
-                <h2>GAME OVER</h2>
+                <div class="game-over-header">
+                    <h2>GAME OVER</h2>
+                </div>
                 <div class="game-stats">
-                    <div class="stat">
+                    <div class="stat highlight-stat">
                         <span class="stat-label">Final Score</span>
                         <span class="final-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Coins Collected</span>
+                        <span class="final-coins">🪙 0</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Distance</span>
@@ -71,6 +113,10 @@
         <section class="pause-screen hidden" id="pauseScreen">
             <div class="pause-content">
                 <h2>PAUSED</h2>
+                <div class="pause-hints">
+                    <p>💡 <strong>Tip:</strong> Collect <span style="color:#ffd93d">Coins</span> for bonus score!</p>
+                    <p>⚡ Collect <span style="color:#00e5ff">NOS</span> to charge Nitro & smash through traffic!</p>
+                </div>
                 <button class="resume-btn" id="resumeBtn">RESUME GAME</button>
                 <button class="quit-btn" id="quitBtn">QUIT TO HOME</button>
             </div>
