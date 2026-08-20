@@ -1,61 +1,50 @@
+// =============================================================================
+// PLAYER CLASS (Extends Vehicle)
+// Manages player movement, steering between lanes, and Nitro Boost state
+// =============================================================================
+
+import { Vehicle } from "./vehicle.js";
+import { CONFIG } from "./config.js";
 import { keys } from "./input.js";
 
-const lanes = [26.67, 50, 73.33];
+export class Player extends Vehicle {
+    constructor() {
+        super(1, 0, null); // Start in middle lane (index 1)
 
-const player = {
-    lane: 1,
-    speed: 5,
-    element: null,
-    
-    // Nitro System
-    nitroGauge: 50,          // Percentage: 0 to 100
-    isNitroActive: false,
-    nitroDuration: 0,
-    nitroMaxDuration: 3.5,   // Seconds of boost per full charge
-    nitroSpeedMultiplier: 1.8,
+        // Nitro Boost State
+        this.nitroGauge = 50;        // 0 to 100%
+        this.isNitroActive = false;  // Whether boost is currently active
+        this.nitroDuration = 0;      // Remaining boost duration in seconds
+    }
 
+    // Connect the HTML element to this player instance
     initialize(element) {
         this.element = element;
-        this.updatePosition();
-    },
+        this.updatePosition(); // Inherited from Vehicle.prototype
+    }
 
-    update(deltaTime = 0.016) {
-        // Lateral Steering
-        if (keys.ArrowLeft && this.lane > 0) {
+    // Steer left one lane
+    steerLeft() {
+        if (this.lane > 0) {
             this.lane--;
-            keys.ArrowLeft = false;
+            this.updatePosition();
         }
+    }
 
-        if (keys.ArrowRight && this.lane < lanes.length - 1) {
+    // Steer right one lane
+    steerRight() {
+        if (this.lane < CONFIG.lanes.length - 1) {
             this.lane++;
-            keys.ArrowRight = false;
+            this.updatePosition();
         }
+    }
 
-        // Nitro Activation Trigger via Key
-        if ((keys.ArrowUp || keys.Space) && !this.isNitroActive && this.nitroGauge >= 25) {
-            this.activateNitro();
-            keys.ArrowUp = false;
-            keys.Space = false;
-        }
-
-        // Update Nitro Status
-        if (this.isNitroActive) {
-            this.nitroDuration -= deltaTime;
-            this.nitroGauge = Math.max(0, (this.nitroDuration / this.nitroMaxDuration) * 100);
-
-            if (this.nitroDuration <= 0) {
-                this.deactivateNitro();
-            }
-        }
-
-        this.updatePosition();
-    },
-
+    // Turn on Nitro Boost
     activateNitro() {
         if (this.nitroGauge < 20 || this.isNitroActive) return false;
 
         this.isNitroActive = true;
-        this.nitroDuration = (this.nitroGauge / 100) * this.nitroMaxDuration;
+        this.nitroDuration = (this.nitroGauge / 100) * CONFIG.nitroMaxDuration;
 
         if (this.element) {
             this.element.classList.add("nitro-active");
@@ -67,8 +56,9 @@ const player = {
         }
 
         return true;
-    },
+    }
 
+    // Turn off Nitro Boost
     deactivateNitro() {
         this.isNitroActive = false;
         this.nitroDuration = 0;
@@ -82,24 +72,54 @@ const player = {
         if (road) {
             road.classList.remove("nitro-speed-mode");
         }
-    },
+    }
 
-    addNitro(amount = 35) {
+    // Add nitro charge (from collected NOS pickups)
+    addNitro(amount = CONFIG.nitroFillOnPickup) {
         this.nitroGauge = Math.min(100, this.nitroGauge + amount);
-    },
+    }
 
-    updatePosition() {
-        if (this.element) {
-            this.element.style.left = `${lanes[this.lane]}%`;
+    // Update player steering and nitro state each frame
+    update(deltaTime = 0.016) {
+        // Handle Left Steering
+        if (keys.ArrowLeft) {
+            this.steerLeft();
+            keys.ArrowLeft = false; // consume keypress
         }
-    },
 
+        // Handle Right Steering
+        if (keys.ArrowRight) {
+            this.steerRight();
+            keys.ArrowRight = false; // consume keypress
+        }
+
+        // Handle Nitro Trigger
+        if ((keys.ArrowUp || keys.Space) && !this.isNitroActive && this.nitroGauge >= 20) {
+            this.activateNitro();
+            keys.ArrowUp = false;
+            keys.Space = false;
+        }
+
+        // Drain Nitro while active
+        if (this.isNitroActive) {
+            this.nitroDuration -= deltaTime;
+            this.nitroGauge = Math.max(0, (this.nitroDuration / CONFIG.nitroMaxDuration) * 100);
+
+            if (this.nitroDuration <= 0) {
+                this.deactivateNitro();
+            }
+        }
+    }
+
+    // Reset player back to starting state on new game
     reset() {
         this.lane = 1;
         this.nitroGauge = 40;
         this.deactivateNitro();
         this.updatePosition();
     }
-};
+}
 
-export { player, lanes };
+// Create a single shared Player instance
+export const player = new Player();
+export const lanes = CONFIG.lanes;
