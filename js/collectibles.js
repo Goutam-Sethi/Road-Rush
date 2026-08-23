@@ -1,13 +1,6 @@
-// =============================================================================
-// COLLECTIBLE CLASSES, PROTOTYPES & COIN GENERATOR
-// Manages Collectibles (Coins & Nitro Boost NOS bottles)
-// =============================================================================
-
 import { CONFIG } from "./config.js";
+import { enemyManager } from "./enemy.js";
 
-// -----------------------------------------------------------------------------
-// 1. BASE COLLECTIBLE CLASS & PROTOTYPES
-// -----------------------------------------------------------------------------
 export class Collectible {
     constructor(lane = 0, y = -50, element = null, type = "generic") {
         this.lane = lane;
@@ -15,39 +8,35 @@ export class Collectible {
         this.element = element;
         this.type = type;
     }
+
+    updatePosition() {
+        if (this.element) {
+            this.element.style.left = `${CONFIG.lanes[this.lane]}%`;
+            this.element.style.top = `${this.y}px`;
+        }
+    }
+
+    remove() {
+        if (this.element && this.element.parentNode) {
+            this.element.remove();
+        }
+    }
+
+    isColliding(otherElement, margin = 6) {
+        if (!this.element || !otherElement) return false;
+
+        const rect1 = this.element.getBoundingClientRect();
+        const rect2 = otherElement.getBoundingClientRect();
+
+        return !(
+            rect1.right - margin < rect2.left + margin ||
+            rect1.left + margin > rect2.right - margin ||
+            rect1.bottom - margin < rect2.top + margin ||
+            rect1.top + margin > rect2.bottom - margin
+        );
+    }
 }
 
-// Attach shared methods to Collectible.prototype
-Collectible.prototype.updatePosition = function () {
-    if (this.element) {
-        this.element.style.left = `${CONFIG.lanes[this.lane]}%`;
-        this.element.style.top = `${this.y}px`;
-    }
-};
-
-Collectible.prototype.remove = function () {
-    if (this.element && this.element.parentNode) {
-        this.element.remove();
-    }
-};
-
-Collectible.prototype.isColliding = function (otherElement, margin = 6) {
-    if (!this.element || !otherElement) return false;
-
-    const rect1 = this.element.getBoundingClientRect();
-    const rect2 = otherElement.getBoundingClientRect();
-
-    return !(
-        rect1.right - margin < rect2.left + margin ||
-        rect1.left + margin > rect2.right - margin ||
-        rect1.bottom - margin < rect2.top + margin ||
-        rect1.top + margin > rect2.bottom - margin
-    );
-};
-
-// -----------------------------------------------------------------------------
-// 2. SUBCLASSES: COIN & NITRO ITEM
-// -----------------------------------------------------------------------------
 export class Coin extends Collectible {
     constructor(lane, y = -50) {
         const element = document.createElement("div");
@@ -75,22 +64,15 @@ export class NitroItem extends Collectible {
     }
 }
 
-// -----------------------------------------------------------------------------
-// 3. GENERATOR FUNCTION (Coin Streak Generator)
-// Uses function* and yield to yield 3 sequential coin placements in a line
-// -----------------------------------------------------------------------------
 export function* coinStreakGenerator(lane) {
     for (let i = 0; i < 3; i++) {
         yield {
-            lane: lane,
+            lane,
             yOffset: -50 - (i * 70)
         };
     }
 }
 
-// -----------------------------------------------------------------------------
-// 4. COLLECTIBLES MANAGER
-// -----------------------------------------------------------------------------
 export const collectiblesManager = {
     items: [],
     coinSpawnTimer: null,
@@ -110,12 +92,37 @@ export const collectiblesManager = {
         this.nitroSpawnTimer = null;
     },
 
+    isLaneSafe(lane, targetY = -50, minDistance = 160) {
+        if (enemyManager && Array.isArray(enemyManager.enemies)) {
+            for (const enemy of enemyManager.enemies) {
+                if (enemy.lane === lane && Math.abs(enemy.y - targetY) < minDistance) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    },
+
+    getSafeLane(targetY = -50, minDistance = 160) {
+        const safeLanes = [];
+        for (let lane = 0; lane < CONFIG.lanes.length; lane++) {
+            if (this.isLaneSafe(lane, targetY, minDistance)) {
+                safeLanes.push(lane);
+            }
+        }
+
+        if (safeLanes.length > 0) {
+            return safeLanes[Math.floor(Math.random() * safeLanes.length)];
+        }
+
+        return Math.floor(Math.random() * CONFIG.lanes.length);
+    },
+
     scheduleCoinSpawn() {
         const nextTime = Math.random() * 800 + this.coinInterval;
         this.coinSpawnTimer = setTimeout(() => {
             if (!this.coinSpawnTimer) return;
 
-            // 40% chance to spawn a 3-coin streak using the Generator function
             if (Math.random() < 0.4) {
                 this.spawnCoinStreak();
             } else {
@@ -139,31 +146,27 @@ export const collectiblesManager = {
         const road = document.querySelector(".road");
         if (!road) return;
 
-        const lane = laneIndex !== null ? laneIndex : Math.floor(Math.random() * CONFIG.lanes.length);
-        const coin = new Coin(lane, yOffset);
+        const lane = (laneIndex !== null && this.isLaneSafe(laneIndex, yOffset, 160))
+            ? laneIndex
+            : this.getSafeLane(yOffset, 160);
 
+        const coin = new Coin(lane, yOffset);
         road.appendChild(coin.element);
         this.items.push(coin);
     },
 
-    // Uses the Generator function to yield and spawn coins in a row
     spawnCoinStreak() {
-        const lane = Math.floor(Math.random() * CONFIG.lanes.length);
-        const streakGen = coinStreakGenerator(lane);
-
-        let step = streakGen.next();
+        const lane = this.getSafeLane(-100, 220);
         let index = 0;
 
-        while (!step.done) {
-            const coinData = step.value;
+        for (const coinData of coinStreakGenerator(lane)) {
+            const currentIndex = index;
             setTimeout(() => {
                 if (this.coinSpawnTimer) {
                     this.spawnSingleCoin(coinData.lane, coinData.yOffset);
                 }
-            }, index * 180);
-
+            }, currentIndex * 180);
             index++;
-            step = streakGen.next();
         }
     },
 
@@ -171,7 +174,7 @@ export const collectiblesManager = {
         const road = document.querySelector(".road");
         if (!road) return;
 
-        const lane = Math.floor(Math.random() * CONFIG.lanes.length);
+        const lane = this.getSafeLane(-70, 180);
         const nitro = new NitroItem(lane, -70);
 
         road.appendChild(nitro.element);
@@ -184,9 +187,32 @@ export const collectiblesManager = {
             item.y += speed * 60 * deltaTime;
             item.element.style.top = `${item.y}px`;
 
-            // Remove when off-screen
+            if (enemyManager && Array.isArray(enemyManager.enemies)) {
+                let removed = false;
+                for (const enemy of enemyManager.enemies) {
+                    if (enemy.lane === item.lane && Math.abs(enemy.y - item.y) < 110) {
+                        const altLane1 = (item.lane + 1) % CONFIG.lanes.length;
+                        const altLane2 = (item.lane + 2) % CONFIG.lanes.length;
+
+                        if (this.isLaneSafe(altLane1, item.y, 110)) {
+                            item.lane = altLane1;
+                            item.updatePosition();
+                        } else if (this.isLaneSafe(altLane2, item.y, 110)) {
+                            item.lane = altLane2;
+                            item.updatePosition();
+                        } else {
+                            item.remove();
+                            this.items.splice(i, 1);
+                            removed = true;
+                        }
+                        break;
+                    }
+                }
+                if (removed) continue;
+            }
+
             if (item.y > roadHeight + 60) {
-                item.remove(); // Inherited from Collectible.prototype
+                item.remove();
                 this.items.splice(i, 1);
             }
         }
@@ -198,7 +224,6 @@ export const collectiblesManager = {
         for (let i = this.items.length - 1; i >= 0; i--) {
             const item = this.items[i];
 
-            // Use prototype collision check
             if (item.isColliding(playerInstance.element)) {
                 const road = document.querySelector(".road");
                 const roadRect = road ? road.getBoundingClientRect() : { left: 0, top: 0 };
@@ -216,7 +241,7 @@ export const collectiblesManager = {
 
                 item.element.classList.add("collected");
                 setTimeout(() => {
-                    item.remove(); // Inherited from Collectible.prototype
+                    item.remove();
                 }, 200);
 
                 this.items.splice(i, 1);
@@ -236,9 +261,10 @@ export const collectiblesManager = {
 
         road.appendChild(popup);
 
+        popup.addEventListener("animationend", () => popup.remove(), { once: true });
         setTimeout(() => {
-            popup.remove();
-        }, 800);
+            if (popup.parentNode) popup.remove();
+        }, 1200);
     },
 
     clear() {

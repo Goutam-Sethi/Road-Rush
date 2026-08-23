@@ -7,6 +7,7 @@
     <title>Road Rush - Play</title>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/game-play.css">
+    <script type="module" src="./js/game-play.js" defer></script>
 </head>
 
 <body>
@@ -29,13 +30,13 @@
                     <div class="nitro-container">
                         <div class="nitro-header">
                             <span class="nitro-label">⚡ NITRO</span>
-                            <span class="nitro-percent">50%</span>
+                            <span class="nitro-percent">40%</span>
                         </div>
                         <div class="nitro-bar-track">
-                            <div class="nitro-bar-fill" id="nitroBarFill" style="width: 50%;"></div>
+                            <div class="nitro-bar-fill" id="nitroBarFill" style="width: 40%;"></div>
                         </div>
                     </div>
-                    <button class="nitro-action-btn" id="nitroActionBtn" title="Boost! (Space or Up Arrow)">
+                    <button class="nitro-action-btn" id="nitroActionBtn" title="Boost! (Space)">
                         ⚡ BOOST
                     </button>
                 </div>
@@ -62,7 +63,6 @@
                 <div class="lane-marking lane-1"></div>
                 <div class="lane-marking lane-2"></div>
                 <div class="player-car" id="playerCar">
-                    <div class="car-window"></div>
                     <div class="exhaust-flames">
                         <span class="flame flame-left"></span>
                         <span class="flame flame-right"></span>
@@ -123,8 +123,6 @@
         </section>
 
     </main>
-
-    <script type="module" src="./js/game-play.js"></script>
 </body>
 
 </html>

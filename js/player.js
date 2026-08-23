@@ -1,29 +1,35 @@
-// =============================================================================
-// PLAYER CLASS (Extends Vehicle)
-// Manages player movement, steering between lanes, and Nitro Boost state
-// =============================================================================
-
 import { Vehicle } from "./vehicle.js";
 import { CONFIG } from "./config.js";
 import { keys } from "./input.js";
 
 export class Player extends Vehicle {
     constructor() {
-        super(1, 0, null); // Start in middle lane (index 1)
+        super(1, 0, null);
 
-        // Nitro Boost State
-        this.nitroGauge = 50;        // 0 to 100%
-        this.isNitroActive = false;  // Whether boost is currently active
-        this.nitroDuration = 0;      // Remaining boost duration in seconds
+        this.bottomPercent = 5;
+        this.minBottom = 5;
+        this.maxBottom = 75;
+        this.verticalSpeed = 50;
+
+        this.nitroGauge = CONFIG.initialNitro;
+        this.isNitroActive = false;
+        this.nitroDuration = 0;
+        this.isInvulnerable = false;
+        this.invulnerableTimer = null;
     }
 
-    // Connect the HTML element to this player instance
     initialize(element) {
         this.element = element;
-        this.updatePosition(); // Inherited from Vehicle.prototype
+        this.updatePosition();
     }
 
-    // Steer left one lane
+    updatePosition() {
+        if (this.element) {
+            this.element.style.left = `${CONFIG.lanes[this.lane]}%`;
+            this.element.style.bottom = `${this.bottomPercent}%`;
+        }
+    }
+
     steerLeft() {
         if (this.lane > 0) {
             this.lane--;
@@ -31,7 +37,6 @@ export class Player extends Vehicle {
         }
     }
 
-    // Steer right one lane
     steerRight() {
         if (this.lane < CONFIG.lanes.length - 1) {
             this.lane++;
@@ -39,7 +44,16 @@ export class Player extends Vehicle {
         }
     }
 
-    // Turn on Nitro Boost
+    moveUp(deltaTime = 0.016) {
+        this.bottomPercent = Math.min(this.maxBottom, this.bottomPercent + this.verticalSpeed * deltaTime);
+        this.updatePosition();
+    }
+
+    moveDown(deltaTime = 0.016) {
+        this.bottomPercent = Math.max(this.minBottom, this.bottomPercent - this.verticalSpeed * deltaTime);
+        this.updatePosition();
+    }
+
     activateNitro() {
         if (this.nitroGauge < 20 || this.isNitroActive) return false;
 
@@ -58,11 +72,9 @@ export class Player extends Vehicle {
         return true;
     }
 
-    // Turn off Nitro Boost
     deactivateNitro() {
         this.isNitroActive = false;
         this.nitroDuration = 0;
-        this.nitroGauge = 0;
 
         if (this.element) {
             this.element.classList.remove("nitro-active");
@@ -74,33 +86,53 @@ export class Player extends Vehicle {
         }
     }
 
-    // Add nitro charge (from collected NOS pickups)
+    setInvulnerable(duration = 1.2) {
+        this.isInvulnerable = true;
+        if (this.element) {
+            this.element.classList.add("invulnerable");
+        }
+
+        if (this.invulnerableTimer) {
+            clearTimeout(this.invulnerableTimer);
+        }
+
+        this.invulnerableTimer = setTimeout(() => {
+            this.isInvulnerable = false;
+            if (this.element) {
+                this.element.classList.remove("invulnerable");
+            }
+            this.invulnerableTimer = null;
+        }, duration * 1000);
+    }
+
     addNitro(amount = CONFIG.nitroFillOnPickup) {
         this.nitroGauge = Math.min(100, this.nitroGauge + amount);
     }
 
-    // Update player steering and nitro state each frame
     update(deltaTime = 0.016) {
-        // Handle Left Steering
         if (keys.ArrowLeft) {
             this.steerLeft();
-            keys.ArrowLeft = false; // consume keypress
+            keys.ArrowLeft = false;
         }
 
-        // Handle Right Steering
         if (keys.ArrowRight) {
             this.steerRight();
-            keys.ArrowRight = false; // consume keypress
+            keys.ArrowRight = false;
         }
 
-        // Handle Nitro Trigger
-        if ((keys.ArrowUp || keys.Space) && !this.isNitroActive && this.nitroGauge >= 20) {
+        if (keys.ArrowUp) {
+            this.moveUp(deltaTime);
+        }
+
+        if (keys.ArrowDown) {
+            this.moveDown(deltaTime);
+        }
+
+        if (keys.Space && !this.isNitroActive && this.nitroGauge >= 20) {
             this.activateNitro();
-            keys.ArrowUp = false;
             keys.Space = false;
         }
 
-        // Drain Nitro while active
         if (this.isNitroActive) {
             this.nitroDuration -= deltaTime;
             this.nitroGauge = Math.max(0, (this.nitroDuration / CONFIG.nitroMaxDuration) * 100);
@@ -111,15 +143,22 @@ export class Player extends Vehicle {
         }
     }
 
-    // Reset player back to starting state on new game
     reset() {
         this.lane = 1;
-        this.nitroGauge = 40;
+        this.bottomPercent = 5;
+        this.isInvulnerable = false;
+        if (this.invulnerableTimer) {
+            clearTimeout(this.invulnerableTimer);
+            this.invulnerableTimer = null;
+        }
         this.deactivateNitro();
+        this.nitroGauge = CONFIG.initialNitro;
+        if (this.element) {
+            this.element.classList.remove("invulnerable", "collision");
+        }
         this.updatePosition();
     }
 }
 
-// Create a single shared Player instance
 export const player = new Player();
 export const lanes = CONFIG.lanes;

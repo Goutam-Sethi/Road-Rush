@@ -420,7 +420,7 @@ body {
     letter-spacing: 1px;
     pointer-events: none;
     z-index: 15;
-    animation: floatUpFade 0.8s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    animation: floatUpFade 1.2s forwards cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .floating-pickup.coin-pickup {
@@ -439,6 +439,12 @@ body {
     text-shadow: 0 0 15px rgba(255, 71, 87, 1), 0 2px 4px #000;
 }
 
+.floating-pickup.damage-pickup {
+    color: #ff4757;
+    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+    text-shadow: 0 0 12px rgba(255, 71, 87, 0.9), 0 2px 4px #000;
+}
+
 /* ==========================================================================
    CARS & NITRO EFFECTS
    ========================================================================== */
@@ -447,37 +453,24 @@ body {
 .enemy-car {
     position: absolute;
     width: clamp(38px, 10%, 55px);
-    aspect-ratio: 5 / 9;
+    aspect-ratio: 1 / 2;
     transform: translateX(-50%);
-    border-radius: 6px;
     z-index: 2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: left 0.1s ease-out;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
 }
 
 .player-car {
     bottom: 5%;
-    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-    border: 2px solid #64b5f6;
-    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.car-window {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    width: 70%;
-    height: 25%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, rgba(200, 230, 255, 0.6), rgba(100, 180, 255, 0.4));
-    border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-image: url('../assets/cars/player_car.svg');
 }
 
 /* Nitro Active Super State */
 .player-car.nitro-active {
-    box-shadow: 0 0 25px #00e5ff, 0 0 50px rgba(0, 229, 255, 0.8), 0 4px 15px rgba(0, 0, 0, 0.6);
-    border-color: #ffffff;
+    filter: drop-shadow(0 0 15px #00e5ff) drop-shadow(0 0 25px rgba(0, 229, 255, 0.8));
     animation: carNitroVibrate 0.08s infinite alternate;
 }
 
@@ -486,7 +479,7 @@ body {
     bottom: -18px;
     left: 50%;
     transform: translateX(-50%);
-    width: 80%;
+    width: 60%;
     display: flex;
     justify-content: space-around;
     opacity: 0;
@@ -508,42 +501,40 @@ body {
 }
 
 .enemy-car {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff3838 100%);
-    border: 2px solid #ff9999;
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-image: url('../assets/cars/enemy_red.svg');
 }
 
-.enemy-car::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    width: 70%;
-    height: 25%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, rgba(255, 200, 200, 0.6), rgba(255, 100, 100, 0.4));
-    border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Smashed Enemy Animation */
+/* Smashed Enemy Animation (Nitro Smash) */
 .enemy-car.smashed {
-    animation: enemySmash 0.35s forwards cubic-bezier(0.25, 1, 0.5, 1);
+    animation: enemySmash 0.45s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
     pointer-events: none;
 }
 
-/* Collision animation */
-@keyframes carCollision {
-    0% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.05); }
-    100% { transform: translateX(-50%) scale(1); }
+/* Traffic Wrecked (Normal Crash Impact & Fadeout) */
+.enemy-car.traffic-wrecked {
+    animation: trafficWreck 0.4s forwards ease-out;
+    pointer-events: none;
 }
 
+/* Player Wrecked Animation (Severe Failure & Damage) */
+.player-car.player-wrecked,
 .player-car.collision {
-    animation: carCollision 0.4s ease;
+    animation: playerWreck 0.85s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    z-index: 10;
+}
+
+/* Invulnerability Blinking State */
+.player-car.invulnerable {
+    animation: playerBlink 0.18s infinite ease-in-out;
+}
+
+/* Screen Shake on Impacts */
+.road.crash-shake {
+    animation: screenCrashShake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.road.smash-shake {
+    animation: screenSmashShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* ==========================================================================
@@ -801,9 +792,26 @@ body {
 }
 
 @keyframes floatUpFade {
-    0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
-    20% { opacity: 1; transform: translate(-50%, -15px) scale(1.1); }
-    100% { opacity: 0; transform: translate(-50%, -50px) scale(1); }
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.75);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(-50%, -10px) scale(1.08);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(-50%, -18px) scale(1);
+    }
+    75% {
+        opacity: 0.9;
+        transform: translate(-50%, -40px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60px) scale(0.95);
+    }
 }
 
 @keyframes carNitroVibrate {
@@ -836,9 +844,90 @@ body {
     100% { background-position-y: 80px; }
 }
 
+@keyframes playerWreck {
+    0% {
+        transform: translateX(-50%) rotate(0deg) scale(1);
+        filter: brightness(4) contrast(2) drop-shadow(0 0 35px #ff1744);
+    }
+    15% {
+        transform: translateX(calc(-50% - 14px)) translateY(12px) rotate(-18deg) scale(0.92);
+        filter: brightness(3) contrast(1.8) drop-shadow(0 0 40px #ff0000);
+    }
+    30% {
+        transform: translateX(calc(-50% + 14px)) translateY(6px) rotate(16deg) scale(0.95);
+        filter: brightness(3) contrast(1.6) drop-shadow(0 0 30px #ff1744);
+    }
+    45% {
+        transform: translateX(calc(-50% - 8px)) translateY(2px) rotate(-10deg) scale(0.98);
+        filter: brightness(2) drop-shadow(0 0 20px #ff1744);
+    }
+    60% {
+        transform: translateX(calc(-50% + 6px)) rotate(6deg);
+        filter: brightness(1.6) drop-shadow(0 0 15px #ff1744);
+    }
+    80% {
+        transform: translateX(calc(-50% - 2px)) rotate(-2deg);
+        filter: brightness(1.2);
+    }
+    100% {
+        transform: translateX(-50%) rotate(0deg) scale(1);
+        filter: none;
+    }
+}
+
+@keyframes trafficWreck {
+    0% {
+        transform: translateX(-50%) scale(1) rotate(0deg);
+        filter: brightness(3) drop-shadow(0 0 20px #ff1744);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(calc(-50% + 20px)) translateY(-20px) scale(0.8) rotate(20deg);
+        filter: brightness(2);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateX(calc(-50% + 40px)) translateY(-40px) scale(0.2) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes playerBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
 @keyframes enemySmash {
-    0% { transform: translateX(-50%) scale(1) rotate(0deg); filter: brightness(3); }
-    100% { transform: translateX(-50%) translateY(-100px) scale(0.1) rotate(540deg); opacity: 0; }
+    0% {
+        transform: translateX(-50%) scale(1.2) rotate(0deg);
+        filter: brightness(4) drop-shadow(0 0 35px #ff6b6b);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) translateY(-50px) scale(1.3) rotate(240deg);
+        filter: brightness(3) drop-shadow(0 0 25px #ffd93d);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateX(-50%) translateY(-120px) scale(0.1) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes screenCrashShake {
+    0%, 100% { transform: translate(0, 0); }
+    15% { transform: translate(-8px, 6px); }
+    30% { transform: translate(8px, -6px); }
+    45% { transform: translate(-5px, 4px); }
+    60% { transform: translate(5px, -4px); }
+    75% { transform: translate(-2px, 2px); }
+}
+
+@keyframes screenSmashShake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-5px, -3px); }
+    50% { transform: translate(5px, 3px); }
+    75% { transform: translate(-2px, 2px); }
 }
 
 @keyframes coinPulse {

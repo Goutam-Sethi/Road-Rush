@@ -1,5 +1,3 @@
-/* GLOBAL STYLES */
-
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +30,6 @@ body {
     display: none !important;
 }
 
-/* ANIMATIONS */
 
 @keyframes fadeIn {
     from {
@@ -76,7 +73,6 @@ body {
     }
 }
 
-/* BUTTONS */
 
 button, a.play-btn, a.back-home-btn, a.start-btn {
     transition: all 0.3s ease;
@@ -86,8 +82,6 @@ button, a.play-btn, a.back-home-btn, a.start-btn {
 button:active, a.play-btn:active, a.back-home-btn:active {
     transform: scale(0.98);
 }
-
-/* RESPONSIVE */
 
 @media (max-width: 480px) {
     .game {

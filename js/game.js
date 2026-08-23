@@ -153,54 +153,77 @@ export const game = {
     },
 
     checkCollisions() {
-        if (!player.element) return;
+        if (!player.element || player.isInvulnerable) return;
 
         for (let i = enemyManager.enemies.length - 1; i >= 0; i--) {
             const enemy = enemyManager.enemies[i];
 
-            // Use the prototype collision detection method on player
             if (player.isColliding(enemy.element)) {
                 this.handleCollision(enemy, i);
+                break;
             }
         }
     },
 
     handleCollision(enemy, index) {
+        const road = document.querySelector(".road");
+        const roadRect = road ? road.getBoundingClientRect() : { left: 0, top: 0 };
+        const playerRect = player.element ? player.element.getBoundingClientRect() : { left: 0, top: 0 };
+        const impactX = playerRect.left - roadRect.left + playerRect.width / 2;
+        const impactY = playerRect.top - roadRect.top;
+
         if (player.isNitroActive) {
-            // Nitro Smash! Destroy enemy without taking damage
             enemy.smashed();
             enemyManager.enemies.splice(index, 1);
 
             this.score += CONFIG.smashScoreBonus;
 
-            const road = document.querySelector(".road");
-            const roadRect = road ? road.getBoundingClientRect() : { left: 0, top: 0 };
-            const enemyRect = enemy.element.getBoundingClientRect();
+            if (road) {
+                road.classList.add("smash-shake");
+                setTimeout(() => road.classList.remove("smash-shake"), 400);
+            }
 
             collectiblesManager.showFloatingEffect(
-                "+150 SMASH!",
-                enemyRect.left - roadRect.left + enemyRect.width / 2,
-                enemyRect.top - roadRect.top,
+                "🔥 +150 SMASH!",
+                impactX,
+                impactY,
                 "smash-pickup"
             );
             return;
         }
 
-        // Standard crash: Player loses 1 life
         this.lives--;
-        player.element.classList.add("collision");
+        player.setInvulnerable(1.6);
 
-        setTimeout(() => {
-            if (player.element) {
-                player.element.classList.remove("collision");
-            }
-        }, 400);
+        if (player.element) {
+            player.element.classList.add("player-wrecked");
+            setTimeout(() => {
+                if (player.element) player.element.classList.remove("player-wrecked");
+            }, 850);
+        }
 
-        enemy.destroy(); // Inherited from Vehicle.prototype
+        player.bottomPercent = Math.max(player.minBottom, player.bottomPercent - 8);
+        player.updatePosition();
+
+        if (road) {
+            road.classList.add("crash-shake");
+            setTimeout(() => road.classList.remove("crash-shake"), 550);
+        }
+
+        collectiblesManager.showFloatingEffect(
+            "-1 HP",
+            impactX,
+            impactY - 15,
+            "damage-pickup"
+        );
+
+        enemy.wrecked();
         enemyManager.enemies.splice(index, 1);
 
         if (this.lives <= 0) {
-            this.gameOver();
+            setTimeout(() => {
+                this.gameOver();
+            }, 600);
         }
     },
 

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="100%" height="100%">
+    <g transform="rotate(180 50 100)">
+        <!-- Wheels -->
+        <rect x="5" y="35" width="12" height="30" rx="3" fill="#151515" />
+        <rect x="83" y="35" width="12" height="30" rx="3" fill="#151515" />
+        <rect x="5" y="145" width="12" height="30" rx="3" fill="#151515" />
+        <rect x="83" y="145" width="12" height="30" rx="3" fill="#151515" />
+        
+        <!-- Main Body Base (Shadow/Underbody) -->
+        <path d="M 15 25 L 85 25 C 95 25, 95 40, 95 55 L 95 175 C 95 190, 85 195, 85 195 L 15 195 C 5 195, 5 190, 5 175 L 5 55 C 5 40, 5 25, 15 25 Z" fill="#b71c1c" />
+        
+        <!-- Main Car Body -->
+        <path d="M 22 20 L 78 20 C 85 20, 90 45, 90 65 L 90 165 C 90 185, 82 195, 78 195 L 22 195 C 18 195, 10 185, 10 165 L 10 65 C 10 45, 15 20, 22 20 Z" fill="#e53935" />
+        
+        <!-- Body Highlights/Contours -->
+        <path d="M 28 22 L 72 22 C 78 22, 82 45, 82 65 L 82 155 C 82 175, 76 188, 72 188 L 28 188 C 24 188, 18 175, 18 155 L 18 65 C 18 45, 22 22, 28 22 Z" fill="#ef5350" />
+        
+        <!-- Hood Decal/Detail -->
+        <rect x="40" y="30" width="20" height="25" fill="#b71c1c" rx="4" />
+        
+        <!-- Windshield -->
+        <path d="M 18 75 L 82 75 C 85 75, 80 95, 75 110 L 25 110 C 20 95, 15 75, 18 75 Z" fill="#212121" />
+        <path d="M 22 78 L 78 78 C 80 78, 77 94, 73 106 L 27 106 C 23 94, 20 78, 22 78 Z" fill="#424242" />
+        
+        <!-- Roof -->
+        <path d="M 25 110 L 75 110 L 72 145 L 28 145 Z" fill="#e53935" />
+        
+        <!-- Rear Window -->
+        <path d="M 28 145 L 72 145 L 75 165 L 25 165 Z" fill="#212121" />
+        <path d="M 31 148 L 69 148 L 71 162 L 29 162 Z" fill="#424242" />
+        
+        <!-- Headlights (Aggressive Angle) -->
+        <path d="M 18 35 L 32 25 L 35 35 L 18 45 Z" fill="#fff9c4" />
+        <path d="M 82 35 L 68 25 L 65 35 L 82 45 Z" fill="#fff9c4" />
+        
+        <!-- Taillights (Roundish) -->
+        <circle cx="25" cy="190" r="5" fill="#ff1744" />
+        <circle cx="38" cy="190" r="5" fill="#ff1744" />
+        <circle cx="62" cy="190" r="5" fill="#ff1744" />
+        <circle cx="75" cy="190" r="5" fill="#ff1744" />
+        
+        <!-- Mirrors -->
+        <path d="M 8 90 L 16 85 L 16 98 Z" fill="#e53935" />
+        <path d="M 92 90 L 84 85 L 84 98 Z" fill="#e53935" />
+    </g>
+</svg>
