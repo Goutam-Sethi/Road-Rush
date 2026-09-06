@@ -225,7 +225,8 @@ body {
     opacity: 0.4;
 }
 
-.pause-btn {
+.pause-btn,
+.audio-btn {
     padding: 6px 12px;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -234,10 +235,20 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.pause-btn:hover {
+.pause-btn:hover,
+.audio-btn:hover {
     background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.05);
+}
+
+.audio-btn.muted {
+    opacity: 0.6;
+    border-color: rgba(255, 107, 107, 0.4);
 }
 
 /* ==========================================================================
@@ -611,6 +622,108 @@ body {
 }
 
 /* ==========================================================================
+   START RACE COUNTDOWN OVERLAY
+   ========================================================================== */
+
+.countdown-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.8) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
+    pointer-events: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.countdown-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.countdown-label {
+    font-size: clamp(1rem, 3.5vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #a0aec0;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+}
+
+.countdown-number {
+    font-size: clamp(5.5rem, 20vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 4px;
+    animation: countdownPulse 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    text-shadow: 0 0 50px currentColor;
+}
+
+.countdown-number.count-3 {
+    color: #ff4757;
+}
+
+.countdown-number.count-2 {
+    color: #ffa502;
+}
+
+.countdown-number.count-1 {
+    color: #2ed573;
+}
+
+.countdown-number.count-go {
+    color: #00e5ff;
+    font-size: clamp(5rem, 18vw, 8rem);
+    animation: countdownGo 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes countdownPulse {
+    0% {
+        transform: scale(0.25);
+        opacity: 0;
+    }
+    35% {
+        transform: scale(1.18);
+        opacity: 1;
+    }
+    70% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes countdownGo {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    35% {
+        transform: scale(1.25);
+        opacity: 1;
+    }
+    75% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.45);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
    GAME OVER & MODAL SCREENS
    ========================================================================== */
 
@@ -643,9 +756,28 @@ body {
 
 .game-over-content h2 {
     font-size: clamp(2.2rem, 8vw, 3rem);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: #ff6b6b;
     letter-spacing: 4px;
+}
+
+.new-record-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffd93d, #ff8e53);
+    color: #1a1a2e;
+    font-size: 0.9rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 20px rgba(255, 217, 61, 0.6);
+    animation: pulseRecord 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulseRecord {
+    0% { transform: scale(1); filter: brightness(1); }
+    100% { transform: scale(1.06); filter: brightness(1.25); }
 }
 
 .game-stats {
@@ -677,11 +809,17 @@ body {
 
 .final-score,
 .final-coins,
+.best-coins,
 .distance,
-.top-speed {
+.top-speed,
+.best-score {
     font-size: clamp(1.2rem, 3.5vw, 1.6rem);
     font-weight: bold;
     color: #ffd93d;
+}
+
+.best-score {
+    color: #00e5ff;
 }
 
 .final-score {

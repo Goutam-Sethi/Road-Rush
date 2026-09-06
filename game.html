@@ -54,6 +54,7 @@
                             <span class="life"></span>
                         </div>
                     </div>
+                    <button class="audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">🔊</button>
                     <button class="pause-btn" id="pauseBtn" title="Pause game">⏸</button>
                 </div>
             </div>
@@ -70,6 +71,14 @@
                 </div>
             </div>
 
+            <!-- START RACE 3-SECOND COUNTDOWN OVERLAY -->
+            <div class="countdown-overlay hidden" id="countdownOverlay">
+                <div class="countdown-card">
+                    <span class="countdown-label">GET READY</span>
+                    <div class="countdown-number count-3" id="countdownNumber">3</div>
+                </div>
+            </div>
+
             <!-- Mobile Steer Touch Controls -->
             <div class="mobile-controls">
                 <button class="steer-btn steer-left" id="steerLeftBtn" aria-label="Steer Left">◀</button>
@@ -83,6 +92,7 @@
             <div class="game-over-content">
                 <div class="game-over-header">
                     <h2>GAME OVER</h2>
+                    <div class="new-record-badge hidden" id="newRecordBadge">🏆 NEW HIGH SCORE!</div>
                 </div>
                 <div class="game-stats">
                     <div class="stat highlight-stat">
@@ -94,12 +104,20 @@
                         <span class="final-coins">🪙 0</span>
                     </div>
                     <div class="stat">
+                        <span class="stat-label">Max Coins (Record)</span>
+                        <span class="best-coins">🪙 0</span>
+                    </div>
+                    <div class="stat">
                         <span class="stat-label">Distance</span>
                         <span class="distance">0m</span>
                     </div>
                     <div class="stat">
                         <span class="stat-label">Top Speed</span>
                         <span class="top-speed">0</span>
+                    </div>
+                    <div class="stat highlight-stat">
+                        <span class="stat-label">All-Time Best Score</span>
+                        <span class="best-score">0</span>
                     </div>
                 </div>
                 <div class="button-group">

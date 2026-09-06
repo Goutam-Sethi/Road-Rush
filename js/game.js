@@ -7,6 +7,7 @@ import { player } from "./player.js";
 import { enemyManager } from "./enemy.js";
 import { collectiblesManager } from "./collectibles.js";
 import { CONFIG } from "./config.js";
+import { audio } from "./audio.js";
 
 export const game = {
     running: false,
@@ -52,6 +53,9 @@ export const game = {
         collectiblesManager.clear();
         collectiblesManager.start();
 
+        // Start procedural engine sound
+        audio.startEngine();
+
         // Start the Browser requestAnimationFrame animation loop
         this.animationId = requestAnimationFrame(this.loop.bind(this));
     },
@@ -59,6 +63,8 @@ export const game = {
     stop() {
         this.running = false;
 
+        audio.stopEngine();
+        audio.stopNitroBoost();
         enemyManager.stop();
         collectiblesManager.stop();
 
@@ -70,6 +76,8 @@ export const game = {
 
     pause() {
         this.paused = true;
+        audio.pauseEngine();
+        audio.stopNitroBoost();
         collectiblesManager.stop();
         enemyManager.stop();
     },
@@ -77,6 +85,7 @@ export const game = {
     resume() {
         this.paused = false;
         this.previousTime = 0;
+        audio.resumeEngine();
         collectiblesManager.start();
         enemyManager.start();
         this.animationId = requestAnimationFrame(this.loop.bind(this));
@@ -123,6 +132,9 @@ export const game = {
         const road = document.querySelector(".road");
         const roadHeight = road ? road.clientHeight : 600;
 
+        // Modulate procedural engine hum pitch & tone based on speed & nitro
+        audio.setEnginePitch(this.speed, player.isNitroActive);
+
         this.updateRoad(deltaTime);
         enemyManager.update(this.speed, roadHeight, deltaTime);
         collectiblesManager.update(this.speed, roadHeight, deltaTime);
@@ -133,10 +145,12 @@ export const game = {
             () => {
                 this.coins++;
                 this.score += CONFIG.coinScoreBonus;
+                audio.playCoin();
             },
             () => {
                 player.addNitro(CONFIG.nitroFillOnPickup);
                 this.score += CONFIG.nitroScoreBonus;
+                audio.playNitroPickup();
             }
         );
 
@@ -175,6 +189,7 @@ export const game = {
         if (player.isNitroActive) {
             enemy.smashed();
             enemyManager.enemies.splice(index, 1);
+            audio.playSmash();
 
             this.score += CONFIG.smashScoreBonus;
 
@@ -194,6 +209,7 @@ export const game = {
 
         this.lives--;
         player.setInvulnerable(1.6);
+        audio.playCrash();
 
         if (player.element) {
             player.element.classList.add("player-wrecked");
@@ -229,6 +245,9 @@ export const game = {
 
     gameOver() {
         this.running = false;
+        audio.stopEngine();
+        audio.stopNitroBoost();
+        audio.playGameOver();
         enemyManager.stop();
         collectiblesManager.stop();
 

@@ -1,6 +1,7 @@
 import { Vehicle } from "./vehicle.js";
 import { CONFIG } from "./config.js";
 import { keys } from "./input.js";
+import { audio } from "./audio.js";
 
 export class Player extends Vehicle {
     constructor() {
@@ -69,6 +70,8 @@ export class Player extends Vehicle {
             road.classList.add("nitro-speed-mode");
         }
 
+        audio.playNitroBoost();
+
         return true;
     }
 
@@ -84,6 +87,8 @@ export class Player extends Vehicle {
         if (road) {
             road.classList.remove("nitro-speed-mode");
         }
+
+        audio.stopNitroBoost();
     }
 
     setInvulnerable(duration = 1.2) {

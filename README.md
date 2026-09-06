@@ -18,9 +18,9 @@ A fast-paced 2D arcade car racing game built entirely with **HTML5**, **CSS3**, 
 - [x] **Responsive Desktop & Mobile Controls**:
   - **Desktop**: `Arrow Keys` or `WASD` to steer &bull; `Space` or `Up Arrow` for Nitro Boost &bull; `Esc` to Pause.
   - **Mobile**: On-screen steering touch buttons, swipe gestures, and dedicated touch Nitro boost button.
-- [ ] Persistent LocalStorage Statistics *(Coming Soon)*
+- [x] **Persistent LocalStorage Records**: All-Time High score, Max Coins in a single game record, distance, top speed, and new record celebrations.
+- [x] **Hybrid Sound & Custom Audio Engine**: Seamless gapless menu BGM, countdown ignition start, looping car engine sound, custom booster audio, arcade SFX, and universal mute toggle.
 - [ ] Car Garage & Customization *(Coming Soon)*
-- [ ] Procedural Web Audio Engine *(Coming Soon)*
 
 ---
 
