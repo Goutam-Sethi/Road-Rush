@@ -1,5 +1,5 @@
 export const CONFIG = {
-    lanes: [26.67, 50, 73.33],
+    lanes: [18, 50, 82],
 
     initialSpeed: 5,
     maxSpeed: 18,

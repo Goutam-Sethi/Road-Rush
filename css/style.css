@@ -4,6 +4,18 @@
     box-sizing: border-box;
 }
 
+:root {
+    --accent-red: #ff4757;
+    --accent-orange: #ff7f50;
+    --accent-yellow: #ffd93d;
+    --accent-cyan: #00e5ff;
+    --accent-purple: #70a1ff;
+    --bg-dark-1: #0a0e17;
+    --bg-dark-2: #121826;
+    --card-bg: rgba(22, 30, 49, 0.65);
+    --card-border: rgba(255, 255, 255, 0.08);
+}
+
 html,
 body {
     width: 100%;
@@ -12,17 +24,116 @@ body {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: white;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background: radial-gradient(circle at 50% 20%, #172036 0%, var(--bg-dark-1) 85%);
+    color: #ffffff;
     background-attachment: fixed;
+    position: relative;
+    user-select: none;
 }
 
+/* ==========================================================================
+   ANIMATED SPEED HIGHWAY & PERSPECTIVE GRID
+   ========================================================================== */
+.bg-speed-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Horizon ambient glow */
+.grid-horizon {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    width: 80vw;
+    height: 300px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.12) 0%, rgba(255, 71, 87, 0.08) 45%, transparent 75%);
+    filter: blur(40px);
+}
+
+/* Perspective Grid floor */
+.bg-speed-grid::before {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -50%;
+    width: 200%;
+    height: 90%;
+    background-image: 
+        linear-gradient(rgba(0, 229, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.07) 1px, transparent 1px);
+    background-size: 50px 50px;
+    transform: perspective(400px) rotateX(65deg);
+    animation: gridScroll 3s linear infinite;
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 10%, transparent 80%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9) 10%, transparent 80%);
+}
+
+@keyframes gridScroll {
+    0% {
+        background-position-y: 0px;
+    }
+    100% {
+        background-position-y: 50px;
+    }
+}
+
+/* Dynamic vertical speed streaks */
+.speed-streaks {
+    position: absolute;
+    inset: 0;
+}
+
+.streak {
+    position: absolute;
+    top: -150px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 229, 255, 0.7), transparent);
+    opacity: 0.4;
+    animation: streakDrop linear infinite;
+}
+
+.s1 { left: 12%; height: 120px; animation-duration: 2.2s; animation-delay: 0.3s; }
+.s2 { left: 28%; height: 90px; animation-duration: 1.8s; animation-delay: 1.1s; background: linear-gradient(to bottom, transparent, rgba(255, 217, 61, 0.6), transparent); }
+.s3 { left: 45%; height: 140px; animation-duration: 2.5s; animation-delay: 0.7s; }
+.s4 { left: 62%; height: 100px; animation-duration: 1.9s; animation-delay: 1.5s; }
+.s5 { left: 80%; height: 110px; animation-duration: 2.1s; animation-delay: 0.2s; background: linear-gradient(to bottom, transparent, rgba(255, 71, 87, 0.6), transparent); }
+.s6 { left: 92%; height: 130px; animation-duration: 2.7s; animation-delay: 1.8s; }
+
+@keyframes streakDrop {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.6;
+    }
+    85% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(115vh);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   HOME SCREEN LAYOUT
+   ========================================================================== */
 .game {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .home-screen {
@@ -39,170 +150,365 @@ body {
 .home-content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
     text-align: center;
-    width: min(100%, 1100px);
-    height: 100%;
-    justify-content: space-around;
+    width: min(94%, 960px);
+    max-height: 96vh;
+    justify-content: space-evenly;
     align-items: center;
     margin: 0 auto;
-    padding: 10px 15px;
+    padding: 12px 16px;
+    z-index: 2;
 }
 
+/* ==========================================================================
+   HERO / LOGO SECTION & CAR BADGE
+   ========================================================================== */
 .logo-section {
-    animation: slideDown 0.8s ease-out;
-    flex-shrink: 0;
+    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.supercar-preview {
+    width: 64px;
+    height: 105px;
+    margin-bottom: 2px;
+    filter: drop-shadow(0 6px 14px rgba(0, 229, 255, 0.45));
+    animation: carHover 3s ease-in-out infinite;
+    cursor: default;
+}
+
+.hero-car-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.supercar-preview:hover .hero-car-img {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+@keyframes carHover {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
 .logo-title {
-    font-size: clamp(2rem, 12vw, 3.5rem);
+    font-size: clamp(2.4rem, 8vw, 4.2rem);
     font-weight: 900;
-    letter-spacing: 8px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 50%, #ffd93d 100%);
+    letter-spacing: 6px;
+    line-height: 1.05;
+    background: linear-gradient(135deg, #ffffff 0%, #ffd93d 35%, #ff4757 80%, #ff6b81 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 5px;
-    text-shadow: 0 0 40px rgba(255, 107, 107, 0.3);
+    margin-bottom: 4px;
+    text-shadow: 0 0 35px rgba(255, 71, 87, 0.35);
+    position: relative;
+    display: inline-block;
 }
 
 .logo-subtitle {
-    font-size: clamp(0.7rem, 2.5vw, 1rem);
-    color: #b0b0ff;
-    letter-spacing: 2px;
+    font-size: clamp(0.7rem, 2.2vw, 0.95rem);
+    color: #94a3b8;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    font-weight: 300;
+    font-weight: 600;
 }
 
+/* ==========================================================================
+   FEATURE CARDS (GLASSMORPHISM)
+   ========================================================================== */
 .home-showcase {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    width: min(100%, 900px);
-    max-height: none;
-    padding: 0 10px;
+    gap: 14px;
+    width: min(100%, 880px);
+    padding: 0 4px;
     animation: slideUp 0.8s ease-out 0.2s both;
 }
 
 .showcase-card {
-    padding: 10px 12px;
-    background: linear-gradient(135deg, rgba(76, 175, 255, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    transition: all 0.3s ease;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.showcase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
 }
 
 .showcase-card:hover {
-    background: linear-gradient(135deg, rgba(76, 175, 255, 0.2) 0%, rgba(255, 107, 107, 0.2) 100%);
-    border-color: rgba(255, 107, 107, 0.4);
-    transform: translateY(-2px);
+    background: rgba(30, 41, 67, 0.8);
+    border-color: rgba(0, 229, 255, 0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 229, 255, 0.18);
+}
+
+.showcase-card:hover::before {
+    opacity: 1;
 }
 
 .showcase-icon {
-    font-size: 1.5rem;
-    display: block;
-    margin-bottom: 3px;
+    font-size: 1.6rem;
+    display: inline-block;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    transition: transform 0.3s ease;
+}
+
+.showcase-card:hover .showcase-icon {
+    transform: scale(1.15) rotate(5deg);
 }
 
 .showcase-card h3 {
-    font-size: clamp(0.75rem, 2vw, 0.95rem);
-    margin-bottom: 2px;
-    color: #ffd93d;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    margin-bottom: 4px;
+    color: var(--accent-yellow);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
+    font-weight: 700;
 }
 
 .showcase-card p {
-    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
-    color: #ccc;
-    line-height: 1.2;
+    font-size: clamp(0.68rem, 1.4vw, 0.82rem);
+    color: #94a3b8;
+    line-height: 1.35;
 }
 
+/* ==========================================================================
+   CAREER STATS SECTION
+   ========================================================================== */
 .home-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    width: min(100%, 480px);
-    padding: 0 10px;
+    gap: 16px;
+    width: min(100%, 460px);
+    padding: 0 4px;
     animation: slideUp 0.8s ease-out 0.3s both;
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
-    padding: 10px 8px;
-    background: rgba(76, 175, 255, 0.1);
-    border: 2px solid rgba(76, 175, 255, 0.3);
-    border-radius: 10px;
+    padding: 10px 14px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.05);
 }
 
 .stat-number {
-    font-size: clamp(1.1rem, 3vw, 1.5rem);
-    font-weight: bold;
-    color: #ffd93d;
+    font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+    font-weight: 800;
+    color: var(--accent-yellow);
     margin-bottom: 2px;
+    font-family: 'Trebuchet MS', -apple-system, sans-serif;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255, 217, 61, 0.3);
 }
 
 .stat-name {
-    font-size: clamp(0.6rem, 1.8vw, 0.75rem);
-    color: #aaa;
+    font-size: clamp(0.62rem, 1.6vw, 0.74rem);
+    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   START RACE CTA BUTTON (MATCHING USER SNIPPET: VIBRANT GLOWING ORANGE CAPSULE)
+   ========================================================================== */
+.cta-container {
+    animation: slideUp 0.8s ease-out 0.4s both;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .play-btn {
-    display: inline-block;
-    padding: 12px 30px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-    color: white;
-    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
-    font-weight: bold;
-    letter-spacing: 2px;
-    border: none;
-    border-radius: 12px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px 52px;
+    background: linear-gradient(180deg, #ff8c00 0%, #ff6f00 45%, #e65100 100%);
+    color: #ffffff;
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    font-weight: 900;
+    letter-spacing: 3px;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
     text-transform: uppercase;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-    animation: slideUp 0.8s ease-out 0.4s both;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(230, 81, 0, 0.65), 0 0 35px rgba(255, 140, 0, 0.5);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+}
+
+.play-btn-text {
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.play-btn-chevrons {
+    position: relative;
+    z-index: 2;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -2px;
+    transition: transform 0.25s ease;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.play-btn-glow {
+    position: absolute;
+    inset: -4px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ff9100, #ff3d00);
+    filter: blur(14px);
+    opacity: 0.5;
+    z-index: 1;
+    animation: ctaPulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes ctaPulse {
+    0%, 100% {
+        transform: scale(0.98);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scale(1.04);
+        opacity: 0.75;
+    }
 }
 
 .play-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(230, 81, 0, 0.85), 0 0 45px rgba(255, 140, 0, 0.7);
+    filter: brightness(1.06);
 }
 
+.play-btn:hover .play-btn-chevrons {
+    transform: translateX(4px);
+}
+
+.play-btn:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+/* ==========================================================================
+   KEYBOARD CONTROLS LEGEND / FOOTER (MATCHING USER SNIPPET)
+   ========================================================================== */
 .home-footer {
-    font-size: clamp(0.65rem, 1.8vw, 0.8rem);
-    color: #888;
-    padding: 0 10px;
     animation: slideUp 0.8s ease-out 0.5s both;
+    font-size: clamp(0.74rem, 1.8vw, 0.86rem);
+    color: #94a3b8;
+    padding: 0 8px;
 }
 
-@media (max-width: 480px) {
-    .home-content {
-        padding: 10px 8px;
-        gap: 10px;
-    }
-
-    .home-showcase {
-        grid-template-columns: 1fr;
-        gap: 6px;
-        padding: 0 5px;
-    }
-
-    .home-stats {
-        padding: 0 5px;
-        gap: 6px;
-    }
+.controls-hint {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
 }
 
+.hint-icon {
+    font-size: 0.95rem;
+    color: #94a3b8;
+}
 
+kbd {
+    display: inline-block;
+    padding: 3px 10px;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   AUDIO TOGGLE BUTTON
+   ========================================================================== */
+.home-audio-btn {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 100;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+}
+
+.home-audio-btn:hover {
+    background: rgba(30, 41, 67, 0.85);
+    border-color: rgba(0, 229, 255, 0.5);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.25);
+}
+
+.home-audio-btn.muted {
+    opacity: 0.75;
+    border-color: rgba(255, 71, 87, 0.5);
+    background: rgba(255, 71, 87, 0.12);
+}
+
+/* ==========================================================================
+   ANIMATIONS & MEDIA QUERIES
+   ========================================================================== */
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -211,9 +517,8 @@ body {
 @keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateY(-25px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -223,9 +528,8 @@ body {
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(25px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -235,9 +539,8 @@ body {
 @keyframes scaleIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.85);
     }
-
     to {
         opacity: 1;
         transform: scale(1);
@@ -248,37 +551,53 @@ body {
     display: none !important;
 }
 
-/* Audio Toggle Button */
-.home-audio-btn {
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    z-index: 100;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    font-size: 1.35rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .home-showcase {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    .showcase-card {
+        padding: 10px 8px;
+    }
 }
 
-.home-audio-btn:hover {
-    background: rgba(255, 255, 255, 0.22);
-    border-color: rgba(255, 217, 61, 0.6);
-    transform: scale(1.08);
-    box-shadow: 0 6px 20px rgba(255, 217, 61, 0.3);
-}
+@media (max-width: 580px) {
+    .home-content {
+        padding: 8px;
+        gap: 10px;
+    }
 
-.home-audio-btn.muted {
-    opacity: 0.65;
-    border-color: rgba(255, 107, 107, 0.5);
-    background: rgba(255, 107, 107, 0.12);
+    .supercar-preview {
+        width: 50px;
+        height: 80px;
+    }
+
+    .home-showcase {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        max-width: 320px;
+    }
+
+    .showcase-card {
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .showcase-icon {
+        margin-bottom: 0;
+    }
+
+    .home-stats {
+        gap: 10px;
+        max-width: 320px;
+    }
+
+    .controls-hint {
+        font-size: 0.72rem;
+    }
 }
+

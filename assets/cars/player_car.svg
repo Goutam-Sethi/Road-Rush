@@ -1,57 +1,129 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="100%" height="100%">
-    <!-- Wheels -->
-    <rect x="5" y="30" width="12" height="30" rx="3" fill="#111" />
-    <rect x="83" y="30" width="12" height="30" rx="3" fill="#111" />
-    <rect x="5" y="140" width="12" height="30" rx="3" fill="#111" />
-    <rect x="83" y="140" width="12" height="30" rx="3" fill="#111" />
-    
-    <!-- Main Body Base (Shadow/Underbody) -->
-    <path d="M 15 20 L 85 20 C 95 20, 95 35, 95 50 L 95 180 C 95 195, 85 195, 85 195 L 15 195 C 5 195, 5 195, 5 180 L 5 50 C 5 35, 5 20, 15 20 Z" fill="#0d47a1" />
-    
-    <!-- Main Car Body -->
-    <path d="M 20 15 L 80 15 C 92 15, 90 40, 90 60 L 90 170 C 90 190, 85 195, 80 195 L 20 195 C 15 195, 10 190, 10 170 L 10 60 C 10 40, 8 15, 20 15 Z" fill="#1e88e5" />
-    
-    <!-- Body Highlights/Contours -->
-    <path d="M 25 15 L 75 15 C 80 15, 85 40, 85 60 L 85 160 C 85 180, 80 190, 75 190 L 25 190 C 20 190, 15 180, 15 160 L 15 60 C 15 40, 20 15, 25 15 Z" fill="#2196f3" />
-    
-    <!-- Racing Stripes -->
-    <rect x="42" y="15" width="6" height="180" fill="#ffffff" opacity="0.9" />
-    <rect x="52" y="15" width="6" height="180" fill="#ffffff" opacity="0.9" />
-    
-    <!-- Hood Vents -->
-    <path d="M 30 35 L 40 45 L 35 47 Z" fill="#0d47a1" />
-    <path d="M 70 35 L 60 45 L 65 47 Z" fill="#0d47a1" />
-    
-    <!-- Windshield -->
-    <path d="M 20 70 L 80 70 C 85 70, 80 90, 75 105 L 25 105 C 20 90, 15 70, 20 70 Z" fill="#1a237e" />
-    <path d="M 22 73 L 78 73 C 81 73, 78 88, 73 102 L 27 102 C 22 88, 19 73, 22 73 Z" fill="#283593" />
-    
-    <!-- Roof -->
-    <rect x="27" y="105" width="46" height="35" fill="#1e88e5" />
-    <rect x="42" y="105" width="16" height="35" fill="#ffffff" opacity="0.9" />
-    
-    <!-- Rear Window -->
-    <path d="M 27 140 L 73 140 L 75 160 L 25 160 Z" fill="#1a237e" />
-    <path d="M 30 142 L 70 142 L 71 157 L 29 157 Z" fill="#283593" />
-    
-    <!-- Spoiler -->
-    <path d="M 12 180 L 88 180 L 92 192 L 8 192 Z" fill="#111111" />
-    <!-- Spoiler Mounts -->
-    <rect x="30" y="170" width="4" height="15" fill="#111" />
-    <rect x="66" y="170" width="4" height="15" fill="#111" />
-    
-    <!-- Headlights -->
-    <path d="M 15 25 L 30 15 L 35 28 L 18 35 Z" fill="#e3f2fd" />
-    <path d="M 85 25 L 70 15 L 65 28 L 82 35 Z" fill="#e3f2fd" />
-    <!-- Headlight glow -->
-    <path d="M 17 25 L 28 18 L 32 26 L 19 32 Z" fill="#ffffff" />
-    <path d="M 83 25 L 72 18 L 68 26 L 81 32 Z" fill="#ffffff" />
-    
-    <!-- Taillights -->
-    <rect x="15" y="190" width="20" height="5" rx="2" fill="#ff1744" />
-    <rect x="65" y="190" width="20" height="5" rx="2" fill="#ff1744" />
-    
-    <!-- Mirrors -->
-    <path d="M 8 85 L 18 80 L 16 95 Z" fill="#1e88e5" />
-    <path d="M 92 85 L 82 80 L 84 95 Z" fill="#1e88e5" />
+  <defs>
+    <!-- Paint Gradients -->
+    <linearGradient id="pBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0a3875" />
+      <stop offset="15%" stop-color="#1462bd" />
+      <stop offset="50%" stop-color="#2a86eb" />
+      <stop offset="85%" stop-color="#1462bd" />
+      <stop offset="100%" stop-color="#0a3875" />
+    </linearGradient>
+
+    <linearGradient id="pRoofGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d2b52" />
+      <stop offset="50%" stop-color="#184b8a" />
+      <stop offset="100%" stop-color="#0a1f3b" />
+    </linearGradient>
+
+    <linearGradient id="pGlassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#05101f" />
+      <stop offset="35%" stop-color="#1b3b68" />
+      <stop offset="60%" stop-color="#0e2340" />
+      <stop offset="100%" stop-color="#060e18" />
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="pGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Ground Drop Shadow -->
+  <ellipse cx="50" cy="108" rx="42" ry="76" fill="#000000" opacity="0.55" />
+
+  <!-- Tires -->
+  <rect x="7" y="38" width="13" height="34" rx="4" fill="#141414" />
+  <rect x="80" y="38" width="13" height="34" rx="4" fill="#141414" />
+  <rect x="6" y="132" width="14" height="36" rx="4" fill="#141414" />
+  <rect x="80" y="132" width="14" height="36" rx="4" fill="#141414" />
+
+  <!-- Tire Rims/Treads Details -->
+  <line x1="13" y1="42" x2="13" y2="68" stroke="#333" stroke-width="2" />
+  <line x1="87" y1="42" x2="87" y2="68" stroke="#333" stroke-width="2" />
+  <line x1="13" y1="136" x2="13" y2="164" stroke="#333" stroke-width="2" />
+  <line x1="87" y1="136" x2="87" y2="164" stroke="#333" stroke-width="2" />
+
+  <!-- Main Chassis / Outer Silhouette -->
+  <path d="M 28 16 
+           C 40 13, 60 13, 72 16 
+           C 84 19, 87 34, 88 52 
+           C 89 68, 86 85, 84 105 
+           C 87 122, 91 142, 90 166 
+           C 89 184, 81 192, 72 193 
+           C 60 194, 40 194, 28 193 
+           C 19 192, 11 184, 10 166 
+           C 9 142, 13 122, 16 105 
+           C 14 85, 11 68, 12 52 
+           C 13 34, 16 19, 28 16 Z" 
+        fill="url(#pBodyGrad)" stroke="#09254d" stroke-width="1.5" />
+
+  <!-- Aerodynamic Hood Indentations & Vents -->
+  <path d="M 34 26 Q 50 34 66 26 Q 50 31 34 26 Z" fill="#082042" opacity="0.7" />
+  <path d="M 36 38 L 44 58 L 38 60 Z" fill="#0c2e59" />
+  <path d="M 64 38 L 56 58 L 62 60 Z" fill="#0c2e59" />
+
+  <!-- Hood Center Specular Crease -->
+  <line x1="50" y1="20" x2="50" y2="64" stroke="#68b4ff" stroke-width="1.2" opacity="0.7" />
+
+  <!-- Side Mirrors -->
+  <path d="M 12 76 C 5 74, 4 82, 11 86 Z" fill="#104a8f" stroke="#082042" stroke-width="1" />
+  <path d="M 88 76 C 95 74, 96 82, 89 86 Z" fill="#104a8f" stroke="#082042" stroke-width="1" />
+
+  <!-- Front Windshield -->
+  <path d="M 24 66 
+           C 36 62, 64 62, 76 66 
+           C 79 78, 77 94, 73 103 
+           C 62 101, 38 101, 27 103 
+           C 23 94, 21 78, 24 66 Z" 
+        fill="url(#pGlassGrad)" stroke="#091c33" stroke-width="1.5" />
+
+  <!-- Windshield Reflection Glint -->
+  <path d="M 28 68 Q 42 78 48 98 L 44 99 Q 38 80 26 70 Z" fill="#ffffff" opacity="0.3" />
+
+  <!-- Roof Section -->
+  <path d="M 27 103 
+           C 38 101, 62 101, 73 103 
+           C 74 116, 73 130, 71 141 
+           C 60 139, 40 139, 29 141 
+           C 27 130, 26 116, 27 103 Z" 
+        fill="url(#pRoofGrad)" />
+
+  <!-- Roof Central Accent Strip -->
+  <rect x="46" y="103" width="8" height="37" fill="#091f3a" rx="2" />
+  <line x1="50" y1="104" x2="50" y2="139" stroke="#3d8eee" stroke-width="1.5" opacity="0.6" />
+
+  <!-- Rear Window -->
+  <path d="M 29 141 
+           C 40 139, 60 139, 71 141 
+           C 72 153, 70 162, 67 167 
+           C 58 165, 42 165, 33 167 
+           C 30 162, 28 153, 29 141 Z" 
+        fill="url(#pGlassGrad)" stroke="#091c33" stroke-width="1.5" />
+
+  <!-- Engine Cover Vents -->
+  <line x1="38" y1="148" x2="62" y2="148" stroke="#000000" stroke-width="1.5" opacity="0.7" />
+  <line x1="39" y1="154" x2="61" y2="154" stroke="#000000" stroke-width="1.5" opacity="0.7" />
+  <line x1="41" y1="160" x2="59" y2="160" stroke="#000000" stroke-width="1.5" opacity="0.7" />
+
+  <!-- Rear Spoiler / Wing -->
+  <path d="M 12 178 L 88 178 L 86 189 L 14 189 Z" fill="#091728" stroke="#040b14" stroke-width="1.2" />
+  <path d="M 15 179 L 85 179 L 84 183 L 16 183 Z" fill="#1e5fa8" opacity="0.8" />
+  <!-- Spoiler Mounts -->
+  <rect x="32" y="171" width="5" height="11" fill="#000000" />
+  <rect x="63" y="171" width="5" height="11" fill="#000000" />
+
+  <!-- Clean, Simple Headlights (No Glowing Light Beams or Halos) -->
+  <path d="M 20 28 C 22 21, 28 17, 33 22 C 31 29, 24 35, 20 28 Z" fill="#cfd8dc" stroke="#90a4ae" stroke-width="0.8" />
+  <path d="M 80 28 C 78 21, 72 17, 67 22 C 69 29, 76 35, 80 28 Z" fill="#cfd8dc" stroke="#90a4ae" stroke-width="0.8" />
+
+  <!-- Rear Taillights (Vibrant Glowing Red) -->
+  <path d="M 17 190 L 32 190 L 30 194 L 18 194 Z" fill="#ff1744" filter="url(#pGlow)" />
+  <path d="M 68 190 L 83 190 L 82 194 L 70 194 Z" fill="#ff1744" filter="url(#pGlow)" />
+  <line x1="19" y1="192" x2="30" y2="192" stroke="#ff8a80" stroke-width="1.5" />
+  <line x1="70" y1="192" x2="81" y2="192" stroke="#ff8a80" stroke-width="1.5" />
+
+  <!-- Twin Exhausts -->
+  <ellipse cx="38" cy="195" rx="3" ry="2" fill="#222" stroke="#666" stroke-width="0.8" />
+  <ellipse cx="62" cy="195" rx="3" ry="2" fill="#222" stroke="#666" stroke-width="0.8" />
 </svg>

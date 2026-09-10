@@ -232,7 +232,13 @@ export const collectiblesManager = {
                 const pickupY = itemRect.top - roadRect.top;
 
                 if (item.type === "coin") {
-                    this.showFloatingEffect("+1 COIN", pickupX, pickupY, "coin-pickup");
+                    this.showFloatingEffect(
+                        '<span class="bonus-score">+50</span><span class="bonus-sub">+1 COIN</span>',
+                        pickupX,
+                        pickupY,
+                        "coin-pickup",
+                        true
+                    );
                     if (onCollectCoin) onCollectCoin();
                 } else if (item.type === "nitro") {
                     this.showFloatingEffect("+NITRO!", pickupX, pickupY, "nitro-pickup");
@@ -249,13 +255,17 @@ export const collectiblesManager = {
         }
     },
 
-    showFloatingEffect(text, x, y, className) {
+    showFloatingEffect(content, x, y, className, isHTML = false) {
         const road = document.querySelector(".road");
         if (!road) return;
 
         const popup = document.createElement("div");
         popup.className = `floating-pickup ${className}`;
-        popup.textContent = text;
+        if (isHTML) {
+            popup.innerHTML = content;
+        } else {
+            popup.textContent = content;
+        }
         popup.style.left = `${x}px`;
         popup.style.top = `${y}px`;
 
@@ -264,7 +274,7 @@ export const collectiblesManager = {
         popup.addEventListener("animationend", () => popup.remove(), { once: true });
         setTimeout(() => {
             if (popup.parentNode) popup.remove();
-        }, 1200);
+        }, 1300);
     },
 
     clear() {

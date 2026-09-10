@@ -10,13 +10,28 @@
 </head>
 
 <body>
+    <div class="bg-speed-grid" aria-hidden="true">
+        <div class="grid-horizon"></div>
+        <div class="speed-streaks">
+            <span class="streak s1"></span>
+            <span class="streak s2"></span>
+            <span class="streak s3"></span>
+            <span class="streak s4"></span>
+            <span class="streak s5"></span>
+            <span class="streak s6"></span>
+        </div>
+    </div>
+
     <main class="game">
         <section class="home-screen">
             <button class="audio-btn home-audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">🔊</button>
             <div class="home-content">
                 <div class="logo-section">
+                    <div class="supercar-preview" aria-hidden="true">
+                        <img src="./assets/cars/player_car.svg" alt="Road Rush Racer" class="hero-car-img">
+                    </div>
                     <h1 class="logo-title">ROAD RUSH</h1>
-                    <p class="logo-subtitle">Thrilling Arcade Racing Action</p>
+                    <p class="logo-subtitle">⚡ HIGH OCTANE ARCADE RACER ⚡</p>
                 </div>
 
                 <div class="home-showcase">
@@ -31,9 +46,9 @@
                         <p>Collect shiny gold coins to boost score multipliers</p>
                     </div>
                     <div class="showcase-card">
-                        <span class="showcase-icon">📊</span>
+                        <span class="showcase-icon">🏆</span>
                         <h3>Live Records</h3>
-                        <p>Compete for the highest score, distance, and top speeds</p>
+                        <p>Dodge rivals, beat high scores, and climb to the top</p>
                     </div>
                 </div>
 
@@ -48,10 +63,18 @@
                     </div>
                 </div>
 
-                <a href="game.html" class="play-btn">START RACE</a>
+                <div class="cta-container">
+                    <a href="game.html" class="play-btn">
+                        <span class="play-btn-glow"></span>
+                        <span class="play-btn-text">START RACE</span>
+                        <span class="play-btn-chevrons">❯❯❯</span>
+                    </a>
+                </div>
 
                 <div class="home-footer">
-                    <p>⌨ Controls: <strong>Arrow Keys / WASD</strong> to drive &bull; <strong>Space</strong> for Nitro Boost</p>
+                    <p class="controls-hint">
+                        <span class="hint-icon">⌨</span> Controls: <kbd>Arrow Keys</kbd> / <kbd>WASD</kbd> to drive &bull; <kbd>Space</kbd> for Nitro Boost
+                    </p>
                 </div>
             </div>
         </section>

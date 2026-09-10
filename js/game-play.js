@@ -66,7 +66,7 @@ const showGameOverScreen = () => {
     });
 
     finalScoreDisplay.textContent = finalScore.toLocaleString();
-    finalCoinsDisplay.textContent = `🪙 ${finalCoins.toLocaleString()}`;
+    finalCoinsDisplay.textContent = finalCoins.toLocaleString();
     distanceDisplay.textContent = `${distanceMeters.toLocaleString()}m`;
     topSpeedDisplay.textContent = topSpeedVal;
 
@@ -74,18 +74,18 @@ const showGameOverScreen = () => {
         bestScoreDisplay.textContent = record.career.highScore.toLocaleString();
     }
     if (bestCoinsDisplay) {
-        bestCoinsDisplay.textContent = `🪙 ${record.career.maxCoins.toLocaleString()}`;
+        bestCoinsDisplay.textContent = record.career.maxCoins.toLocaleString();
     }
 
     if (newRecordBadge) {
         if (record.isNewHighScore && record.isNewMaxCoins) {
-            newRecordBadge.textContent = '🏆 NEW ALL-TIME RECORD!';
+            newRecordBadge.textContent = 'NEW ALL-TIME RECORD!';
             newRecordBadge.classList.remove('hidden');
         } else if (record.isNewHighScore) {
-            newRecordBadge.textContent = '🏆 NEW HIGH SCORE!';
+            newRecordBadge.textContent = 'NEW HIGH SCORE!';
             newRecordBadge.classList.remove('hidden');
         } else if (record.isNewMaxCoins) {
-            newRecordBadge.textContent = '🪙 NEW COIN RECORD!';
+            newRecordBadge.textContent = 'NEW COIN RECORD!';
             newRecordBadge.classList.remove('hidden');
         } else {
             newRecordBadge.classList.add('hidden');
@@ -239,9 +239,10 @@ const startGame = () => {
 const updateHUD = () => {
     if (!game.running) return;
 
-    scoreDisplay.textContent = Math.floor(game.score);
+    scoreDisplay.textContent = Math.floor(game.score).toLocaleString();
     if (coinsDisplay) coinsDisplay.textContent = game.coins;
-    speedDisplay.textContent = Math.round(game.speed);
+    // Real-time dynamic arcade speed in KM/H (matching screenshot ~148 KM/H)
+    speedDisplay.textContent = Math.round(game.speed * 12 + 40);
 
     // Update Nitro bar and button indicators
     const nitroVal = Math.round(player.nitroGauge);
@@ -268,41 +269,53 @@ const updateHUD = () => {
             nitroActionBtn.classList.remove('boosting');
             if (nitroVal >= 20) {
                 nitroActionBtn.classList.add('ready');
-                nitroActionBtn.textContent = '⚡ BOOST';
+                nitroActionBtn.textContent = '⚡ BOOST!';
             } else {
                 nitroActionBtn.classList.remove('ready');
-                nitroActionBtn.textContent = '⚡ NEED NOS';
+                nitroActionBtn.textContent = '⚡ NEED BOOST!';
             }
         }
         if (mobileNitroBtn) {
             mobileNitroBtn.classList.remove('boosting');
             if (nitroVal >= 20) {
                 mobileNitroBtn.classList.add('ready');
+                mobileNitroBtn.textContent = '⚡ BOOST!';
             } else {
                 mobileNitroBtn.classList.remove('ready');
+                mobileNitroBtn.textContent = '⚡ NEED BOOST!';
             }
         }
     }
 
-    // Update lives display
-    const lifeElements = livesDisplay.querySelectorAll('.life');
+    // Update lives display (❤️ for alive, 🖤 for lost)
+    const lifeElements = livesDisplay ? livesDisplay.querySelectorAll('.life-heart, .life') : [];
     lifeElements.forEach((life, index) => {
         if (index < game.lives) {
             life.classList.remove('lost');
+            life.textContent = '❤️';
         } else {
             life.classList.add('lost');
+            life.textContent = '🖤';
         }
     });
 
     requestAnimationFrame(updateHUD);
 };
 
-// Event Listeners
 if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
 if (retryBtn) retryBtn.addEventListener('click', retryGame);
 if (homeBtn) homeBtn.addEventListener('click', goHome);
 if (resumeBtn) resumeBtn.addEventListener('click', resumeGame);
 if (quitBtn) quitBtn.addEventListener('click', goHome);
+
+const pauseRestartBtn = document.getElementById('pauseRestartBtn');
+if (pauseRestartBtn) {
+    pauseRestartBtn.addEventListener('click', () => {
+        hidePauseScreen();
+        game.stop();
+        startGame();
+    });
+}
 
 if (audioBtn) {
     updateAudioButtonUI();

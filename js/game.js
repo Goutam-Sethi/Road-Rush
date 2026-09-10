@@ -265,12 +265,12 @@ export const game = {
         const road = document.querySelector(".road");
         if (!road) return;
 
-        this.roadOffset = (this.roadOffset + this.speed * 50 * deltaTime) % 80;
+        this.roadOffset = (this.roadOffset + this.speed * 55 * deltaTime) % 3696;
         road.style.setProperty("--road-shift", `${this.roadOffset}px`);
     },
 
     updateRoadDisplay() {
-        document.querySelectorAll(".lane-marking").forEach(marking => {
+        document.querySelectorAll(".lane-marking, .road-curb").forEach(marking => {
             marking.style.backgroundPositionY = `${this.roadOffset}px`;
         });
     }
