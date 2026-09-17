@@ -8,6 +8,7 @@ import { enemyManager } from "./enemy.js";
 import { collectiblesManager } from "./collectibles.js";
 import { CONFIG } from "./config.js";
 import { audio } from "./audio.js";
+import { storage } from "./storage.js";
 
 export const game = {
     running: false,
@@ -37,6 +38,8 @@ export const game = {
         this.running = true;
         this.paused = false;
 
+        this.difficulty = storage.getDifficulty();
+
         this.score = 0;
         this.coins = 0;
         this.baseSpeed = CONFIG.initialSpeed;
@@ -48,7 +51,7 @@ export const game = {
         player.reset();
 
         enemyManager.clear();
-        enemyManager.start();
+        enemyManager.start(this.difficulty);
 
         collectiblesManager.clear();
         collectiblesManager.start();
@@ -87,7 +90,7 @@ export const game = {
         this.previousTime = 0;
         audio.resumeEngine();
         collectiblesManager.start();
-        enemyManager.start();
+        enemyManager.start(this.difficulty);
         this.animationId = requestAnimationFrame(this.loop.bind(this));
     },
 
@@ -116,7 +119,11 @@ export const game = {
         player.update(deltaTime);
 
         // Calculate dynamic speed
-        this.baseSpeed = CONFIG.initialSpeed + this.score / 400;
+        let speedDivisor = 400; // Medium
+        if (this.difficulty === "Easy") speedDivisor = 600;
+        else if (this.difficulty === "Hard") speedDivisor = 200;
+
+        this.baseSpeed = CONFIG.initialSpeed + this.score / speedDivisor;
         if (this.baseSpeed > CONFIG.maxSpeed) {
             this.baseSpeed = CONFIG.maxSpeed;
         }

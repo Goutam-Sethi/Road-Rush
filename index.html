@@ -24,7 +24,14 @@
 
     <main class="game">
         <section class="home-screen">
-            <button class="audio-btn home-audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">🔊</button>
+            <div class="top-controls">
+                <div class="difficulty-wrapper">
+                    <button class="diff-btn" data-diff="Easy">EASY</button>
+                    <button class="diff-btn active" data-diff="Medium">MEDIUM</button>
+                    <button class="diff-btn" data-diff="Hard">HARD</button>
+                </div>
+                <button class="audio-btn home-audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">🔊</button>
+            </div>
             <div class="home-content">
                 <div class="logo-section">
                     <div class="supercar-preview" aria-hidden="true">
@@ -46,9 +53,9 @@
                         <p>Collect shiny gold coins to boost score multipliers</p>
                     </div>
                     <div class="showcase-card">
-                        <span class="showcase-icon">🏆</span>
-                        <h3>Live Records</h3>
-                        <p>Dodge rivals, beat high scores, and climb to the top</p>
+                        <span class="showcase-icon">🏎️</span>
+                        <h3>Endless Racing</h3>
+                        <p>Dodge rivals, survive the rush, and climb to the top</p>
                     </div>
                 </div>
 

@@ -1,5 +1,3 @@
-/* ROAD RUSH - GAMEPLAY & NITRO SYSTEM STYLES */
-
 body {
     background: #0d1117;
     user-select: none;
@@ -28,10 +26,6 @@ body {
     overflow: hidden;
     background: #0d1117;
 }
-
-/* ==========================================================================
-   TOP HUD STYLING (MATCHING SCREENSHOT)
-   ========================================================================== */
 
 .hud {
     width: 100%;
@@ -66,7 +60,6 @@ body {
     max-width: 440px;
 }
 
-/* Stats (Score, Coins, Speed) */
 .hud-stat {
     display: flex;
     align-items: baseline;
@@ -91,7 +84,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* 3D Coin Medallion in HUD */
 .coins-stat {
     display: flex;
     align-items: center;
@@ -125,7 +117,6 @@ body {
     text-shadow: 0 0 10px rgba(255, 202, 40, 0.7);
 }
 
-/* Speed Display (KM/H) */
 .speed-stat {
     display: flex;
     align-items: baseline;
@@ -145,10 +136,6 @@ body {
     color: #8da2ba;
     letter-spacing: 0.5px;
 }
-
-/* ==========================================================================
-   NITRO GAUGE & BOOST BUTTON
-   ========================================================================== */
 
 .nitro-container {
     flex: 1;
@@ -217,7 +204,6 @@ body {
     animation: flameStrobe 0.15s infinite alternate;
 }
 
-/* Neon Pill Boost Button */
 .nitro-action-btn {
     padding: 6px 16px;
     background: rgba(0, 243, 255, 0.08);
@@ -249,10 +235,6 @@ body {
     box-shadow: 0 0 18px rgba(255, 23, 68, 0.9), 0 0 28px rgba(255, 109, 0, 0.6);
     animation: flamePulse 0.3s infinite alternate;
 }
-
-/* ==========================================================================
-   HP HEARTS & UTILITY BUTTONS
-   ========================================================================== */
 
 .lives-container {
     display: flex;
@@ -324,14 +306,6 @@ body {
     color: #ff5252;
 }
 
-/* ==========================================================================
-   GAME ARENA WRAPPER & ROADSIDE ENVIRONMENT
-   ========================================================================== */
-
-/* ==========================================================================
-   GAME ARENA WRAPPER & MINIMALIST ROADSIDE
-   ========================================================================== */
-
 .game-arena-wrapper {
     flex: 1;
     display: flex;
@@ -344,10 +318,6 @@ body {
     background: radial-gradient(circle at 50% 50%, #151922 0%, #0d1017 100%);
 }
 
-/* ==========================================================================
-   ROADWAY & ASPHALT SURFACE
-   ========================================================================== */
-
 .road {
     position: relative;
     width: min(720px, 86vw);
@@ -359,18 +329,16 @@ body {
     z-index: 2;
 }
 
-/* Asphalt Grain & Dark Tone */
 .asphalt-texture {
     position: absolute;
     inset: 0;
-    background: 
+    background:
         radial-gradient(ellipse at 50% 50%, #3e4249 0%, #2b2c31 70%, #1f2024 100%),
         repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0px, rgba(0, 0, 0, 0.04) 2px, transparent 2px, transparent 4px);
     pointer-events: none;
     z-index: 1;
 }
 
-/* Red & White Rally Curbs */
 .road-curb {
     position: absolute;
     top: 0;
@@ -400,18 +368,16 @@ body {
     box-shadow: inset 2px 0 6px rgba(0, 0, 0, 0.5);
 }
 
-/* Asphalt Skid Marks */
 .skid-marks-layer {
     position: absolute;
     inset: 0;
-    background: 
+    background:
         radial-gradient(ellipse at 75% 45%, rgba(0, 0, 0, 0.28) 0%, transparent 60%),
         radial-gradient(ellipse at 25% 65%, rgba(0, 0, 0, 0.25) 0%, transparent 55%);
     pointer-events: none;
     z-index: 2;
 }
 
-/* Dashed Lane Dividers */
 .lane-marking {
     position: absolute;
     top: 0;
@@ -441,7 +407,6 @@ body {
     transform: translateX(-50%);
 }
 
-/* Nitro speed warp effect */
 .speed-lines-overlay {
     position: absolute;
     inset: 0;
@@ -462,10 +427,6 @@ body {
     opacity: 1;
     animation: speedWarp 0.18s linear infinite;
 }
-
-/* ==========================================================================
-   COLLECTIBLES: 3D GOLD COINS & NITRO
-   ========================================================================== */
 
 .collectible-coin {
     position: absolute;
@@ -552,10 +513,6 @@ body {
     transition: all 0.22s ease-out;
 }
 
-/* ==========================================================================
-   FLOATING NOTIFICATIONS / REWARD POPUPS (MATCHING SCREENSHOT)
-   ========================================================================== */
-
 .floating-pickup {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -607,10 +564,6 @@ body {
     text-shadow: 0 0 14px rgba(255, 51, 68, 0.95), 0 2px 4px #000;
 }
 
-/* ==========================================================================
-   CARS, HEADLIGHTS, & EXHAUST SPARKS
-   ========================================================================== */
-
 .player-car,
 .enemy-car {
     position: absolute;
@@ -630,7 +583,6 @@ body {
     background-image: url('../assets/cars/player_car.svg');
 }
 
-/* Exhaust Sparks */
 .exhaust-sparks {
     position: absolute;
     bottom: -10px;
@@ -661,7 +613,6 @@ body {
     100% { transform: translateY(12px) scale(0.3); opacity: 0; }
 }
 
-/* Nitro Active Super State */
 .player-car.nitro-active {
     filter: drop-shadow(0 0 18px #00f3ff) drop-shadow(0 0 30px rgba(0, 243, 255, 0.9));
     animation: carNitroVibrate 0.08s infinite alternate;
@@ -697,31 +648,26 @@ body {
     background-image: url('../assets/cars/enemy_red.svg');
 }
 
-/* Smashed Enemy Animation (Nitro Smash) */
 .enemy-car.smashed {
     animation: enemySmash 0.45s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
     pointer-events: none;
 }
 
-/* Traffic Wrecked (Normal Crash Impact & Fadeout) */
 .enemy-car.traffic-wrecked {
     animation: trafficWreck 0.4s forwards ease-out;
     pointer-events: none;
 }
 
-/* Player Wrecked Animation (Severe Failure & Damage) */
 .player-car.player-wrecked,
 .player-car.collision {
     animation: playerWreck 0.85s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     z-index: 10;
 }
 
-/* Invulnerability Blinking State */
 .player-car.invulnerable {
     animation: playerBlink 0.18s infinite ease-in-out;
 }
 
-/* Screen Shake on Impacts */
 .road.crash-shake {
     animation: screenCrashShake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
@@ -729,10 +675,6 @@ body {
 .road.smash-shake {
     animation: screenSmashShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
-
-/* ==========================================================================
-   MOBILE TOUCH CONTROLS
-   ========================================================================== */
 
 .mobile-controls {
     position: absolute;
@@ -802,10 +744,6 @@ body {
         display: none;
     }
 }
-
-/* ==========================================================================
-   START RACE COUNTDOWN OVERLAY
-   ========================================================================== */
 
 .countdown-overlay {
     position: absolute;
@@ -905,10 +843,6 @@ body {
     }
 }
 
-/* ==========================================================================
-   GAME OVER & MODAL SCREENS
-   ========================================================================== */
-
 .game-over-screen,
 .pause-screen {
     position: fixed;
@@ -987,7 +921,6 @@ body {
     100% { transform: scale(1.03); opacity: 1; }
 }
 
-/* Game Stats Grid */
 .game-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1060,7 +993,6 @@ body {
     text-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
 }
 
-/* Modal Button Groups */
 .button-group {
     display: flex;
     gap: 12px;
@@ -1113,9 +1045,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ==========================================================================
-   PAUSE MODAL STYLING
-   ========================================================================== */
 .pause-content {
     border-color: rgba(0, 212, 255, 0.7);
     box-shadow: 0 0 30px rgba(0, 212, 255, 0.25), 0 20px 40px rgba(0, 0, 0, 0.8);
@@ -1207,10 +1136,6 @@ body {
     color: #ffffff;
     transform: translateY(-2px);
 }
-
-/* ==========================================================================
-   ANIMATIONS & KEYFRAMES
-   ========================================================================== */
 
 @keyframes coinSpin {
     0% { transform: rotateY(0deg); }
@@ -1366,10 +1291,6 @@ body {
     50% { transform: scale(1.15); }
 }
 
-/* ==========================================================================
-   RESPONSIVE QUERIES
-   ========================================================================== */
-
 @media (max-width: 640px) {
     .hud {
         padding: 4px 8px;
@@ -1393,7 +1314,7 @@ body {
     }
 
     .nitro-action-btn {
-        display: none; /* Mobile uses bottom nitro button */
+        display: none;
     }
 
     .nitro-container {

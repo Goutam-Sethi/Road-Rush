@@ -40,6 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === 'm' || e.key === 'M') {
             toggleAudio();
         }
+        if (e.code === 'Space' || e.key === ' ') {
+            e.preventDefault();
+            if (playBtn) window.location.href = playBtn.href;
+        }
     });
 
     // Start background music when index.html opens
@@ -61,10 +65,27 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('keydown', unlockAudio, { once: true });
     window.addEventListener('touchstart', unlockAudio, { once: true });
 
-    // Stop background music smoothly when moving to the race screen
     if (playBtn) {
         playBtn.addEventListener('click', () => {
             audio.stopBackgroundMusic();
+        });
+    }
+
+    const diffBtns = document.querySelectorAll('.diff-btn');
+    if (diffBtns.length > 0) {
+        const currentDiff = storage.getDifficulty() || 'Medium';
+        diffBtns.forEach(btn => {
+            if (btn.dataset.diff === currentDiff) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+            
+            btn.addEventListener('click', () => {
+                diffBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                storage.setDifficulty(btn.dataset.diff);
+            });
         });
     }
 

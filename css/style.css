@@ -32,9 +32,6 @@ body {
     user-select: none;
 }
 
-/* ==========================================================================
-   ANIMATED SPEED HIGHWAY & PERSPECTIVE GRID
-   ========================================================================== */
 .bg-speed-grid {
     position: fixed;
     inset: 0;
@@ -43,7 +40,6 @@ body {
     overflow: hidden;
 }
 
-/* Horizon ambient glow */
 .grid-horizon {
     position: absolute;
     top: 15%;
@@ -55,7 +51,6 @@ body {
     filter: blur(40px);
 }
 
-/* Perspective Grid floor */
 .bg-speed-grid::before {
     content: '';
     position: absolute;
@@ -63,7 +58,7 @@ body {
     left: -50%;
     width: 200%;
     height: 90%;
-    background-image: 
+    background-image:
         linear-gradient(rgba(0, 229, 255, 0.07) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 229, 255, 0.07) 1px, transparent 1px);
     background-size: 50px 50px;
@@ -82,7 +77,6 @@ body {
     }
 }
 
-/* Dynamic vertical speed streaks */
 .speed-streaks {
     position: absolute;
     inset: 0;
@@ -122,9 +116,6 @@ body {
     }
 }
 
-/* ==========================================================================
-   HOME SCREEN LAYOUT
-   ========================================================================== */
 .game {
     position: relative;
     z-index: 1;
@@ -161,9 +152,6 @@ body {
     z-index: 2;
 }
 
-/* ==========================================================================
-   HERO / LOGO SECTION & CAR BADGE
-   ========================================================================== */
 .logo-section {
     animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     display: flex;
@@ -224,9 +212,6 @@ body {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   FEATURE CARDS (GLASSMORPHISM)
-   ========================================================================== */
 .home-showcase {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -299,9 +284,6 @@ body {
     line-height: 1.35;
 }
 
-/* ==========================================================================
-   CAREER STATS SECTION
-   ========================================================================== */
 .home-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -341,9 +323,6 @@ body {
     font-weight: 700;
 }
 
-/* ==========================================================================
-   START RACE CTA BUTTON (MATCHING USER SNIPPET: VIBRANT GLOWING ORANGE CAPSULE)
-   ========================================================================== */
 .cta-container {
     animation: slideUp 0.8s ease-out 0.4s both;
     position: relative;
@@ -428,9 +407,6 @@ body {
     transform: translateY(0px) scale(0.98);
 }
 
-/* ==========================================================================
-   KEYBOARD CONTROLS LEGEND / FOOTER (MATCHING USER SNIPPET)
-   ========================================================================== */
 .home-footer {
     animation: slideUp 0.8s ease-out 0.5s both;
     font-size: clamp(0.74rem, 1.8vw, 0.86rem);
@@ -464,9 +440,6 @@ kbd {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* ==========================================================================
-   AUDIO TOGGLE BUTTON
-   ========================================================================== */
 .home-audio-btn {
     position: absolute;
     top: 20px;
@@ -502,9 +475,6 @@ kbd {
     background: rgba(255, 71, 87, 0.12);
 }
 
-/* ==========================================================================
-   ANIMATIONS & MEDIA QUERIES
-   ========================================================================== */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -551,7 +521,6 @@ kbd {
     display: none !important;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .home-showcase {
         grid-template-columns: repeat(3, 1fr);
@@ -600,4 +569,171 @@ kbd {
         font-size: 0.72rem;
     }
 }
-
+
+.top-controls {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+}
+
+
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 12px;
+    padding: 0 12px;
+    height: 46px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease;
+}
+
+.difficulty-wrapper:hover {
+    background: rgba(30, 41, 67, 0.85);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.25);
+}
+
+.difficulty-wrapper label {
+    color: var(--accent-cyan);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 8px;
+}
+
+.difficulty-wrapper select {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    padding: 5px 0;
+}
+
+.difficulty-wrapper select option {
+    background: var(--bg-dark-2);
+    color: #fff;
+}
+
+.top-controls .home-audio-btn {
+    position: static;
+}
+
+
+
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 12px;
+    padding: 4px;
+    height: 46px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    gap: 4px;
+}
+
+.diff-btn {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.diff-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.diff-btn.active {
+    background: rgba(0, 229, 255, 0.2);
+    color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.top-controls .home-audio-btn {
+    position: static;
+}
+
+
+.difficulty-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 5px;
+    height: 52px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    gap: 6px;
+}
+
+.diff-btn {
+    background: transparent;
+    color: #8da2ba;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 18px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.diff-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.diff-btn[data-diff='Easy'].active {
+    background: rgba(46, 213, 115, 0.25);
+    color: #2ed573;
+    box-shadow: 0 0 15px rgba(46, 213, 115, 0.4), inset 0 0 8px rgba(46, 213, 115, 0.2);
+    border: 1px solid rgba(46, 213, 115, 0.3);
+}
+
+.diff-btn[data-diff='Medium'].active {
+    background: rgba(255, 165, 2, 0.25);
+    color: #ffa502;
+    box-shadow: 0 0 15px rgba(255, 165, 2, 0.4), inset 0 0 8px rgba(255, 165, 2, 0.2);
+    border: 1px solid rgba(255, 165, 2, 0.3);
+}
+
+.diff-btn[data-diff='Hard'].active {
+    background: rgba(255, 71, 87, 0.25);
+    color: #ff4757;
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.4), inset 0 0 8px rgba(255, 71, 87, 0.2);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.top-controls .home-audio-btn {
+    position: static;
+    height: 52px;
+    width: 52px;
+    border-radius: 20px;
+    font-size: 1.4rem;
+}
+

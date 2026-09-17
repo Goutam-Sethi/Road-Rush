@@ -22,23 +22,27 @@ export class Enemy extends Vehicle {
     }
 }
 
-export function* trafficSpawner() {
+export function* trafficSpawner(difficulty = "Medium") {
+    let delayMultiplier = 1.0;
+    if (difficulty === "Easy") delayMultiplier = 1.3;
+    else if (difficulty === "Hard") delayMultiplier = 0.6;
+
     while (true) {
         yield {
             lane: Math.floor(Math.random() * CONFIG.lanes.length),
-            delay: 1000
+            delay: 1000 * delayMultiplier
         };
 
         yield {
             lane: Math.floor(Math.random() * CONFIG.lanes.length),
-            delay: 900
+            delay: 900 * delayMultiplier
         };
 
         const lane1 = Math.floor(Math.random() * CONFIG.lanes.length);
         const lane2 = (lane1 + 1 + Math.floor(Math.random() * (CONFIG.lanes.length - 1))) % CONFIG.lanes.length;
 
-        yield { lane: lane1, delay: 250 };
-        yield { lane: lane2, delay: 1100 };
+        yield { lane: lane1, delay: 250 * delayMultiplier };
+        yield { lane: lane2, delay: 1100 * delayMultiplier };
     }
 }
 
@@ -47,8 +51,8 @@ export const enemyManager = {
     spawnTimer: null,
     trafficGen: null,
 
-    start() {
-        this.trafficGen = trafficSpawner();
+    start(difficulty = "Medium") {
+        this.trafficGen = trafficSpawner(difficulty);
         this.spawnNextWave();
     },
 

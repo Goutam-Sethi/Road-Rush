@@ -7,8 +7,8 @@ export class Player extends Vehicle {
     constructor() {
         super(1, 0, null);
 
-        this.bottomPercent = 5;
-        this.minBottom = 5;
+        this.bottomPercent = 12;
+        this.minBottom = 10;
         this.maxBottom = 75;
         this.verticalSpeed = 50;
 
@@ -150,7 +150,7 @@ export class Player extends Vehicle {
 
     reset() {
         this.lane = 1;
-        this.bottomPercent = 5;
+        this.bottomPercent = 12;
         this.isInvulnerable = false;
         if (this.invulnerableTimer) {
             clearTimeout(this.invulnerableTimer);

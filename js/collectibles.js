@@ -233,7 +233,7 @@ export const collectiblesManager = {
 
                 if (item.type === "coin") {
                     this.showFloatingEffect(
-                        '<span class="bonus-score">+50</span><span class="bonus-sub">+1 COIN</span>',
+                        '<span class="bonus-score">+50</span>',
                         pickupX,
                         pickupY,
                         "coin-pickup",

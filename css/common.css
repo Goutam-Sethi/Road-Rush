@@ -30,7 +30,6 @@ body {
     display: none !important;
 }
 
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -72,7 +71,6 @@ body {
         transform: scale(1);
     }
 }
-
 
 button, a.play-btn, a.back-home-btn, a.start-btn {
     transition: all 0.3s ease;

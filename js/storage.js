@@ -8,7 +8,8 @@ const STORAGE_KEYS = {
     HIGH_SCORE: 'road_rush_high_score',
     MAX_COINS: 'road_rush_max_coins',
     MAX_DISTANCE: 'road_rush_max_distance',
-    TOP_SPEED: 'road_rush_top_speed'
+    TOP_SPEED: 'road_rush_top_speed',
+    DIFFICULTY: 'road_rush_difficulty'
 };
 
 // In-memory fallback if web storage is disabled / blocked
@@ -52,6 +53,14 @@ const setLocalItem = (key, value) => {
 };
 
 export const storage = {
+    getDifficulty() {
+        return getLocalItem(STORAGE_KEYS.DIFFICULTY, 'Medium');
+    },
+
+    setDifficulty(diff) {
+        setLocalItem(STORAGE_KEYS.DIFFICULTY, diff);
+    },
+
     /**
      * Retrieve all persistent career statistics.
      * @returns {{ highScore: number, maxCoins: number, maxDistance: number, topSpeed: number }}
