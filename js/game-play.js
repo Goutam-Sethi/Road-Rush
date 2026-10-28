@@ -3,6 +3,7 @@ import { player } from './player.js';
 import { keys } from './input.js';
 import { storage } from './storage.js';
 import { audio } from './audio.js';
+import { getCarById } from './cars.js';
 
 const gameScreen = document.getElementById('gameScreen');
 const gameOverScreen = document.getElementById('gameOverScreen');
@@ -45,7 +46,8 @@ const playerCarElement = document.getElementById('playerCar');
 const roadElement = document.getElementById('roadElement');
 
 const playerInitialized = () => {
-    player.initialize(playerCarElement);
+    const selectedCar = getCarById(storage.getSelectedCarId());
+    player.initialize(playerCarElement, selectedCar);
 };
 
 const showGameOverScreen = () => {
@@ -69,6 +71,11 @@ const showGameOverScreen = () => {
     finalCoinsDisplay.textContent = finalCoins.toLocaleString();
     distanceDisplay.textContent = `${distanceMeters.toLocaleString()}m`;
     topSpeedDisplay.textContent = topSpeedVal;
+
+    const totalVaultDisplay = document.getElementById('totalVaultCoins');
+    if (totalVaultDisplay) {
+        totalVaultDisplay.textContent = `${record.totalCoins.toLocaleString()} COINS`;
+    }
 
     if (bestScoreDisplay) {
         bestScoreDisplay.textContent = record.career.highScore.toLocaleString();
@@ -257,11 +264,11 @@ const updateHUD = () => {
         if (nitroBarFill) nitroBarFill.classList.add('active-burning');
         if (nitroActionBtn) {
             nitroActionBtn.classList.add('boosting');
-            nitroActionBtn.textContent = '🔥 BOOSTING';
+            nitroActionBtn.textContent = 'BOOSTING';
         }
         if (mobileNitroBtn) {
             mobileNitroBtn.classList.add('boosting');
-            mobileNitroBtn.textContent = '🔥 ACTIVE';
+            mobileNitroBtn.textContent = 'BOOST ACTIVE';
         }
     } else {
         if (nitroBarFill) nitroBarFill.classList.remove('active-burning');
@@ -269,20 +276,20 @@ const updateHUD = () => {
             nitroActionBtn.classList.remove('boosting');
             if (nitroVal >= 20) {
                 nitroActionBtn.classList.add('ready');
-                nitroActionBtn.textContent = '⚡ BOOST!';
+                nitroActionBtn.textContent = 'BOOST';
             } else {
                 nitroActionBtn.classList.remove('ready');
-                nitroActionBtn.textContent = '⚡ NEED BOOST!';
+                nitroActionBtn.textContent = 'NEED NITRO';
             }
         }
         if (mobileNitroBtn) {
             mobileNitroBtn.classList.remove('boosting');
             if (nitroVal >= 20) {
                 mobileNitroBtn.classList.add('ready');
-                mobileNitroBtn.textContent = '⚡ BOOST!';
+                mobileNitroBtn.textContent = 'BOOST';
             } else {
                 mobileNitroBtn.classList.remove('ready');
-                mobileNitroBtn.textContent = '⚡ NEED BOOST!';
+                mobileNitroBtn.textContent = 'NEED NITRO';
             }
         }
     }

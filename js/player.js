@@ -10,6 +10,7 @@ export class Player extends Vehicle {
         this.bottomPercent = 12;
         this.minBottom = 10;
         this.maxBottom = 75;
+        this.baseVerticalSpeed = 50;
         this.verticalSpeed = 50;
 
         this.nitroGauge = CONFIG.initialNitro;
@@ -17,10 +18,31 @@ export class Player extends Vehicle {
         this.nitroDuration = 0;
         this.isInvulnerable = false;
         this.invulnerableTimer = null;
+        this.carConfig = null;
     }
 
-    initialize(element) {
+    setCar(carConfig) {
+        if (!carConfig) return;
+        this.carConfig = carConfig;
+
+        const handlingMult = carConfig.stats?.handlingMultiplier || 1.0;
+        this.verticalSpeed = this.baseVerticalSpeed * handlingMult;
+
+        if (this.element) {
+            if (carConfig.svg) {
+                this.element.style.backgroundImage = `url('${carConfig.svg}')`;
+            }
+            // Better handling = snappier, faster lane change reaction
+            const steerSpeed = Math.max(0.06, 0.10 / handlingMult);
+            this.element.style.transition = `left ${steerSpeed.toFixed(3)}s ease-out`;
+        }
+    }
+
+    initialize(element, carConfig = null) {
         this.element = element;
+        if (carConfig) {
+            this.setCar(carConfig);
+        }
         this.updatePosition();
     }
 
@@ -55,11 +77,17 @@ export class Player extends Vehicle {
         this.updatePosition();
     }
 
+    getNitroMaxDuration() {
+        const mult = this.carConfig?.stats?.nitroMultiplier || 1.0;
+        return CONFIG.nitroMaxDuration * mult;
+    }
+
     activateNitro() {
         if (this.nitroGauge < 20 || this.isNitroActive) return false;
 
         this.isNitroActive = true;
-        this.nitroDuration = (this.nitroGauge / 100) * CONFIG.nitroMaxDuration;
+        const maxDuration = this.getNitroMaxDuration();
+        this.nitroDuration = (this.nitroGauge / 100) * maxDuration;
 
         if (this.element) {
             this.element.classList.add("nitro-active");
@@ -111,7 +139,8 @@ export class Player extends Vehicle {
     }
 
     addNitro(amount = CONFIG.nitroFillOnPickup) {
-        this.nitroGauge = Math.min(100, this.nitroGauge + amount);
+        const nitroMult = this.carConfig?.stats?.nitroMultiplier || 1.0;
+        this.nitroGauge = Math.min(100, this.nitroGauge + amount * nitroMult);
     }
 
     update(deltaTime = 0.016) {
@@ -140,7 +169,8 @@ export class Player extends Vehicle {
 
         if (this.isNitroActive) {
             this.nitroDuration -= deltaTime;
-            this.nitroGauge = Math.max(0, (this.nitroDuration / CONFIG.nitroMaxDuration) * 100);
+            const maxDuration = this.getNitroMaxDuration();
+            this.nitroGauge = Math.max(0, (this.nitroDuration / maxDuration) * 100);
 
             if (this.nitroDuration <= 0) {
                 this.deactivateNitro();
@@ -157,9 +187,19 @@ export class Player extends Vehicle {
             this.invulnerableTimer = null;
         }
         this.deactivateNitro();
-        this.nitroGauge = CONFIG.initialNitro;
+
+        // Starting nitro scales with car's nitro capacity
+        const nitroMult = this.carConfig?.stats?.nitroMultiplier || 1.0;
+        this.nitroGauge = Math.min(100, CONFIG.initialNitro * nitroMult);
+
         if (this.element) {
             this.element.classList.remove("invulnerable", "collision");
+            if (this.carConfig && this.carConfig.svg) {
+                this.element.style.backgroundImage = `url('${this.carConfig.svg}')`;
+            }
+            const handlingMult = this.carConfig?.stats?.handlingMultiplier || 1.0;
+            const steerSpeed = Math.max(0.06, 0.10 / handlingMult);
+            this.element.style.transition = `left ${steerSpeed.toFixed(3)}s ease-out`;
         }
         this.updatePosition();
     }

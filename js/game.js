@@ -9,6 +9,7 @@ import { collectiblesManager } from "./collectibles.js";
 import { CONFIG } from "./config.js";
 import { audio } from "./audio.js";
 import { storage } from "./storage.js";
+import { getCarById } from "./cars.js";
 
 export const game = {
     running: false,
@@ -20,6 +21,7 @@ export const game = {
     lives: CONFIG.maxLives,
     maxLives: CONFIG.maxLives,
     topSpeed: CONFIG.initialSpeed,
+    carConfig: null,
 
     animationId: null,
     previousTime: 0,
@@ -39,15 +41,20 @@ export const game = {
         this.paused = false;
 
         this.difficulty = storage.getDifficulty();
+        this.carConfig = getCarById(storage.getSelectedCarId());
+
+        const speedMult = this.carConfig?.stats?.speedMultiplier || 1.0;
+        const initialSpeed = CONFIG.initialSpeed * speedMult;
 
         this.score = 0;
         this.coins = 0;
-        this.baseSpeed = CONFIG.initialSpeed;
-        this.speed = CONFIG.initialSpeed;
+        this.baseSpeed = initialSpeed;
+        this.speed = initialSpeed;
         this.lives = this.maxLives;
-        this.topSpeed = CONFIG.initialSpeed;
+        this.topSpeed = initialSpeed;
         this.previousTime = 0;
 
+        player.setCar(this.carConfig);
         player.reset();
 
         enemyManager.clear();
@@ -123,9 +130,13 @@ export const game = {
         if (this.difficulty === "Easy") speedDivisor = 600;
         else if (this.difficulty === "Hard") speedDivisor = 200;
 
-        this.baseSpeed = CONFIG.initialSpeed + this.score / speedDivisor;
-        if (this.baseSpeed > CONFIG.maxSpeed) {
-            this.baseSpeed = CONFIG.maxSpeed;
+        const speedMult = this.carConfig?.stats?.speedMultiplier || 1.0;
+        const initialSpeed = CONFIG.initialSpeed * speedMult;
+        const maxSpeed = CONFIG.maxSpeed * speedMult;
+
+        this.baseSpeed = initialSpeed + (this.score / speedDivisor) * speedMult;
+        if (this.baseSpeed > maxSpeed) {
+            this.baseSpeed = maxSpeed;
         }
 
         this.speed = player.isNitroActive

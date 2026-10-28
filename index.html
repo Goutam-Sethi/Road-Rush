@@ -24,38 +24,89 @@
 
     <main class="game">
         <section class="home-screen">
+            <!-- TOP LEFT: GARAGE BUTTON -->
+            <div class="top-left-controls">
+                <button class="top-garage-btn" id="openGarageBtn" title="Open Garage (G)" aria-label="Open Garage">
+                    <svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/>
+                        <circle cx="7" cy="17" r="2"/>
+                        <path d="M9 17h6"/>
+                        <circle cx="17" cy="17" r="2"/>
+                    </svg>
+                    <span class="top-garage-text">GARAGE</span>
+                </button>
+            </div>
+
+            <!-- TOP RIGHT: DIFFICULTY, COIN VAULT, AUDIO -->
             <div class="top-controls">
                 <div class="difficulty-wrapper">
                     <button class="diff-btn" data-diff="Easy">EASY</button>
                     <button class="diff-btn active" data-diff="Medium">MEDIUM</button>
                     <button class="diff-btn" data-diff="Hard">HARD</button>
                 </div>
-                <button class="audio-btn home-audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">🔊</button>
+
+                <div class="wallet-badge" id="topWalletBadge" title="Total Vault Coins">
+                    <svg class="coin-token-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7v10M9 9.5c0-1.4 1.3-2 3-2s3 .6 3 2c0 1.5-1.5 2.5-3 2.5s-3 1-3 2.5c0 1.4 1.3 2 3 2s3-.6 3-2"/>
+                    </svg>
+                    <span class="wallet-amount" id="top-total-coins">0</span>
+                </div>
+
+                <button class="audio-btn home-audio-btn" id="audioBtn" title="Toggle audio (M)" aria-label="Toggle audio">
+                    <svg class="audio-svg unmuted-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                    <svg class="audio-svg muted-icon hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <line x1="23" y1="9" x2="17" y2="15"/>
+                        <line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                </button>
             </div>
+
             <div class="home-content">
                 <div class="logo-section">
-                    <div class="supercar-preview" aria-hidden="true">
-                        <img src="./assets/cars/player_car.svg" alt="Road Rush Racer" class="hero-car-img">
+                    <div class="supercar-preview" id="heroCarPreview" aria-hidden="true" title="Click to open Garage">
+                        <img src="./assets/cars/player_car.svg" alt="Road Rush Racer" class="hero-car-img" id="heroCarImg">
                     </div>
                     <h1 class="logo-title">ROAD RUSH</h1>
-                    <p class="logo-subtitle">⚡ HIGH OCTANE ARCADE RACER ⚡</p>
+                    <p class="logo-subtitle">HIGH OCTANE ARCADE RACER</p>
                 </div>
 
                 <div class="home-showcase">
                     <div class="showcase-card">
-                        <span class="showcase-icon">⚡</span>
+                        <div class="showcase-icon-box cyan">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M13 2L3 14h7v8l10-12h-7l1-8z"/>
+                            </svg>
+                        </div>
                         <h3>Nitro Boost</h3>
                         <p>Charge your NOS meter and smash through traffic at turbo speed</p>
                     </div>
                     <div class="showcase-card">
-                        <span class="showcase-icon">🪙</span>
+                        <div class="showcase-icon-box gold">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 7v10M9 9.5c0-1.4 1.3-2 3-2s3 .6 3 2c0 1.5-1.5 2.5-3 2.5s-3 1-3 2.5c0 1.4 1.3 2 3 2s3-.6 3-2"/>
+                            </svg>
+                        </div>
                         <h3>Coin Vault</h3>
-                        <p>Collect shiny gold coins to boost score multipliers</p>
+                        <p>Collect shiny gold coins to buy high-performance supercars</p>
                     </div>
                     <div class="showcase-card">
-                        <span class="showcase-icon">🏎️</span>
-                        <h3>Endless Racing</h3>
-                        <p>Dodge rivals, survive the rush, and climb to the top</p>
+                        <div class="showcase-icon-box orange">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.1 2 11.5 2 12v4c0 .6.4 1 1 1h2"/>
+                                <circle cx="7" cy="17" r="2"/>
+                                <path d="M9 17h6"/>
+                                <circle cx="17" cy="17" r="2"/>
+                            </svg>
+                        </div>
+                        <h3>Garage Showroom</h3>
+                        <p>Unlock elite hypercars with unique speed and handling perks</p>
                     </div>
                 </div>
 
@@ -65,8 +116,12 @@
                         <span class="stat-name">All-Time High</span>
                     </div>
                     <div class="stat-item">
+                        <span class="stat-number" id="home-total-coins">0</span>
+                        <span class="stat-name">Coins in Wallet</span>
+                    </div>
+                    <div class="stat-item">
                         <span class="stat-number" id="max-coins">0</span>
-                        <span class="stat-name">Max Coins</span>
+                        <span class="stat-name">Best Run Coins</span>
                     </div>
                 </div>
 
@@ -74,17 +129,127 @@
                     <a href="game.html" class="play-btn">
                         <span class="play-btn-glow"></span>
                         <span class="play-btn-text">START RACE</span>
-                        <span class="play-btn-chevrons">❯❯❯</span>
+                        <svg class="play-btn-chevrons" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
                     </a>
                 </div>
 
                 <div class="home-footer">
                     <p class="controls-hint">
-                        <span class="hint-icon">⌨</span> Controls: <kbd>Arrow Keys</kbd> / <kbd>WASD</kbd> to drive &bull; <kbd>Space</kbd> for Nitro Boost
+                        Controls: <kbd>Arrow Keys</kbd> / <kbd>WASD</kbd> to drive &bull; <kbd>Space</kbd> for Nitro &bull; <kbd>G</kbd> Garage
                     </p>
                 </div>
             </div>
         </section>
+
+        <!-- GARAGE MODAL -->
+        <div class="garage-modal-overlay hidden" id="garageModal" aria-modal="true" role="dialog">
+            <div class="garage-modal-card">
+                <div class="garage-header">
+                    <div class="garage-title-wrap">
+                        <span class="garage-tag">CUSTOM PERFORMANCE SHOP</span>
+                        <h2 class="garage-title">RACING GARAGE</h2>
+                    </div>
+                    <div class="garage-vault-display">
+                        <span class="vault-label">COIN VAULT</span>
+                        <div class="vault-pill">
+                            <svg class="coin-token-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 7v10M9 9.5c0-1.4 1.3-2 3-2s3 .6 3 2c0 1.5-1.5 2.5-3 2.5s-3 1-3 2.5c0 1.4 1.3 2 3 2s3-.6 3-2"/>
+                            </svg>
+                            <span class="vault-coins" id="garageVaultCoins">0</span>
+                        </div>
+                    </div>
+                    <button class="garage-close-btn" id="closeGarageBtn" aria-label="Close Garage">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="garage-body">
+                    <button class="garage-nav-btn prev-car" id="prevCarBtn" aria-label="Previous Car">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                    </button>
+
+                    <div class="garage-showcase">
+                        <div class="podium-stage">
+                            <div class="podium-aura" id="podiumAura"></div>
+                            <div class="podium-disk"></div>
+                            <img src="./assets/cars/player_car.svg" alt="Preview Car" class="garage-car-preview" id="garageCarPreview">
+                        </div>
+
+                        <div class="garage-car-details">
+                            <div class="car-tagline" id="garageCarTag">STREET RACER</div>
+                            <h3 class="car-name" id="garageCarName">Cobalt Phantom</h3>
+                            <p class="car-description" id="garageCarDesc">Balanced city performer with nimble responsive handling and reliable boost timing.</p>
+
+                            <div class="car-stats-grid">
+                                <div class="car-stat-row">
+                                    <div class="stat-info">
+                                        <span class="stat-title">TOP SPEED</span>
+                                        <span class="stat-val" id="statSpeedVal">70%</span>
+                                    </div>
+                                    <div class="stat-bar-track">
+                                        <div class="stat-bar-fill speed-fill" id="statSpeedFill" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="car-stat-row">
+                                    <div class="stat-info">
+                                        <span class="stat-title">NITRO BOOST</span>
+                                        <span class="stat-val" id="statNitroVal">70%</span>
+                                    </div>
+                                    <div class="stat-bar-track">
+                                        <div class="stat-bar-fill nitro-fill" id="statNitroFill" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="car-stat-row">
+                                    <div class="stat-info">
+                                        <span class="stat-title">HANDLING</span>
+                                        <span class="stat-val" id="statHandlingVal">75%</span>
+                                    </div>
+                                    <div class="stat-bar-track">
+                                        <div class="stat-bar-fill handling-fill" id="statHandlingFill" style="width: 75%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="garage-nav-btn next-car" id="nextCarBtn" aria-label="Next Car">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="garage-dots-row" id="garageDots">
+                    <!-- Dynamic dots inserted here -->
+                </div>
+
+                <div class="garage-footer">
+                    <div class="garage-price-tag" id="garagePriceTag">
+                        <span class="price-label">PRICE / STATUS</span>
+                        <span class="price-val" id="garagePriceVal">FREE STARTER</span>
+                    </div>
+                    <button class="garage-action-btn" id="garageActionBtn">
+                        EQUIPPED
+                    </button>
+                </div>
+
+                <div class="garage-hints">
+                    <span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navigate</span> &bull;
+                    <span><kbd>Enter</kbd> Buy / Equip</span> &bull;
+                    <span><kbd>Esc</kbd> Close</span>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 

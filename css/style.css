@@ -257,16 +257,54 @@ body {
     opacity: 1;
 }
 
-.showcase-icon {
-    font-size: 1.6rem;
-    display: inline-block;
-    margin-bottom: 6px;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
-    transition: transform 0.3s ease;
+.showcase-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px auto;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.showcase-card:hover .showcase-icon {
-    transform: scale(1.15) rotate(5deg);
+.showcase-icon-box.cyan {
+    color: #00e5ff;
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+}
+
+.showcase-icon-box.gold {
+    color: #ffd700;
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
+}
+
+.showcase-icon-box.orange {
+    color: #ff9100;
+    border-color: rgba(255, 145, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 145, 0, 0.15);
+}
+
+.showcase-card:hover .showcase-icon-box {
+    transform: scale(1.1) translateY(-2px);
+}
+
+.showcase-card:hover .showcase-icon-box.cyan {
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    border-color: #00e5ff;
+}
+
+.showcase-card:hover .showcase-icon-box.gold {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    border-color: #ffd700;
+}
+
+.showcase-card:hover .showcase-icon-box.orange {
+    box-shadow: 0 0 20px rgba(255, 145, 0, 0.4);
+    border-color: #ff9100;
 }
 
 .showcase-card h3 {
@@ -286,41 +324,57 @@ body {
 
 .home-stats {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    width: min(100%, 460px);
+    width: min(100%, 640px);
+    margin: 0 auto;
     padding: 0 4px;
+    justify-content: center;
+    align-items: stretch;
     animation: slideUp 0.8s ease-out 0.3s both;
 }
 
 .stat-item {
     display: flex;
     flex-direction: column;
-    padding: 10px 14px;
-    background: rgba(15, 23, 42, 0.65);
-    border: 1px solid rgba(0, 229, 255, 0.25);
-    border-radius: 12px;
-    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 14px;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     position: relative;
-    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.05);
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.05), 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.stat-item:hover {
+    border-color: rgba(0, 229, 255, 0.45);
+    transform: translateY(-2px);
+    box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.08), 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 15px rgba(0, 229, 255, 0.15);
 }
 
 .stat-number {
-    font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+    font-size: clamp(1.25rem, 2.8vw, 1.65rem);
     font-weight: 800;
     color: var(--accent-yellow);
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     font-family: 'Trebuchet MS', -apple-system, sans-serif;
-    letter-spacing: 1px;
-    text-shadow: 0 0 15px rgba(255, 217, 61, 0.3);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 15px rgba(255, 217, 61, 0.35);
+    text-align: center;
 }
 
 .stat-name {
-    font-size: clamp(0.62rem, 1.6vw, 0.74rem);
-    color: #64748b;
+    font-size: clamp(0.62rem, 1.4vw, 0.72rem);
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
     font-weight: 700;
+    text-align: center;
 }
 
 .cta-container {
@@ -561,8 +615,23 @@ kbd {
     }
 
     .home-stats {
-        gap: 10px;
-        max-width: 320px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        width: 100%;
+        max-width: 440px;
+    }
+
+    .stat-item {
+        padding: 8px 6px;
+    }
+
+    .stat-number {
+        font-size: 1.15rem;
+    }
+
+    .stat-name {
+        font-size: 0.58rem;
+        letter-spacing: 0.8px;
     }
 
     .controls-hint {
@@ -737,3 +806,647 @@ kbd {
     font-size: 1.4rem;
 }
 
+
+/* =============================================================================
+   GARAGE & TOP BAR CONTROLS
+   ============================================================================= */
+
+/* TOP LEFT CONTROLS: GARAGE BUTTON */
+.top-left-controls {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+}
+
+.top-garage-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(22, 34, 64, 0.92));
+    border: 1.5px solid rgba(0, 229, 255, 0.5);
+    padding: 0 20px;
+    height: 52px;
+    border-radius: 20px;
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 15px rgba(0, 229, 255, 0.25);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.top-garage-btn svg {
+    color: #00e5ff;
+    flex-shrink: 0;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.top-garage-btn:hover {
+    background: linear-gradient(135deg, #00d2ff, #0077ff);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 25px rgba(0, 119, 255, 0.65), 0 0 25px rgba(0, 229, 255, 0.6);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.top-garage-btn:hover svg {
+    color: #ffffff;
+    transform: translateX(-2px);
+}
+
+.top-garage-btn:active {
+    transform: translateY(0px) scale(0.98);
+}
+
+.top-garage-text {
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* WALLET BADGE */
+.wallet-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 215, 0, 0.45);
+    padding: 0 16px;
+    height: 52px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2), inset 0 0 8px rgba(255, 215, 0, 0.1);
+}
+
+.coin-token-svg {
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    flex-shrink: 0;
+}
+
+.wallet-amount {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffd700;
+    font-family: 'Trebuchet MS', sans-serif;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+/* HOME AUDIO BUTTON SVG */
+.home-audio-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-audio-btn svg {
+    color: #94a3b8;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.home-audio-btn:hover svg {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.home-audio-btn.muted svg {
+    color: #ff4757;
+}
+
+/* GARAGE MODAL OVERLAY */
+.garage-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(4, 7, 15, 0.88);
+    backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: garageModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.garage-modal-overlay.hidden {
+    display: none;
+}
+
+@keyframes garageModalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.garage-modal-card {
+    position: relative;
+    width: min(94vw, 840px);
+    max-height: 92vh;
+    overflow-y: auto;
+    background: linear-gradient(145deg, rgba(18, 26, 44, 0.95), rgba(9, 13, 24, 0.98));
+    border: 1.5px solid rgba(0, 229, 255, 0.35);
+    border-radius: 24px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 229, 255, 0.15);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #fff;
+}
+
+/* Garage Header */
+.garage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 14px;
+    gap: 12px;
+}
+
+.garage-title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.garage-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #00e5ff;
+    text-transform: uppercase;
+}
+
+.garage-title {
+    font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #ffffff 20%, #00e5ff 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+}
+
+.garage-vault-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.vault-label {
+    font-size: 0.64rem;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.vault-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(10, 16, 28, 0.9);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    padding: 6px 14px;
+    border-radius: 14px;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
+.vault-coins {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffd700;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.garage-close-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.garage-close-btn:hover {
+    background: rgba(255, 71, 87, 0.25);
+    color: #ff4757;
+    border-color: rgba(255, 71, 87, 0.5);
+    transform: rotate(90deg);
+}
+
+/* Garage Body / Showcase */
+.garage-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+.garage-nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1.5px solid rgba(0, 229, 255, 0.4);
+    color: #00e5ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+}
+
+.garage-nav-btn:hover {
+    background: #00e5ff;
+    color: #0a0e17;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+    transform: scale(1.1);
+}
+
+.garage-nav-btn:active {
+    transform: scale(0.95);
+}
+
+.garage-showcase {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: center;
+    gap: 32px;
+}
+
+/* Podium & Car Preview */
+.podium-stage {
+    position: relative;
+    width: 220px;
+    height: 250px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.podium-aura {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.35) 0%, transparent 70%);
+    filter: blur(25px);
+    transition: background 0.4s ease;
+    animation: auraBreath 3s ease-in-out infinite;
+}
+
+@keyframes auraBreath {
+    0%, 100% { transform: scale(0.95); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+}
+
+.podium-disk {
+    position: absolute;
+    bottom: 12px;
+    width: 190px;
+    height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.25) 0%, rgba(15, 23, 42, 0.8) 60%, transparent 80%);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+}
+
+.garage-car-preview {
+    position: relative;
+    z-index: 2;
+    width: 100px;
+    height: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
+    animation: carPodiumFloat 3.5s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
+
+@keyframes carPodiumFloat {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(1deg);
+    }
+}
+
+/* Car Details & Stats */
+.garage-car-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.car-tagline {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    color: #ff9100;
+    text-transform: uppercase;
+}
+
+.car-name {
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    line-height: 1.1;
+}
+
+.car-description {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    line-height: 1.45;
+    min-height: 40px;
+}
+
+/* Stats Bars */
+.car-stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+    background: rgba(11, 17, 30, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+
+.car-stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.stat-title {
+    color: #cbd5e1;
+}
+
+.stat-val {
+    color: #ffffff;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.stat-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.stat-bar-fill.speed-fill {
+    background: linear-gradient(90deg, #ff9100, #ff3d00);
+    box-shadow: 0 0 10px rgba(255, 80, 0, 0.6);
+}
+
+.stat-bar-fill.nitro-fill {
+    background: linear-gradient(90deg, #00e5ff, #0077ff);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+}
+
+.stat-bar-fill.handling-fill {
+    background: linear-gradient(90deg, #00e676, #00b0ff);
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.6);
+}
+
+/* Carousel Dots */
+.garage-dots-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.garage-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.garage-dot:hover {
+    background: rgba(0, 229, 255, 0.5);
+    transform: scale(1.15);
+}
+
+.garage-dot.active {
+    width: 28px;
+    border-radius: 12px;
+    background: #00e5ff;
+    box-shadow: 0 0 10px #00e5ff;
+    border-color: #00e5ff;
+}
+
+/* Garage Footer */
+.garage-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px;
+    gap: 16px;
+}
+
+.garage-price-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.price-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.price-val {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #ffd700;
+    letter-spacing: 1px;
+}
+
+.garage-action-btn {
+    padding: 13px 36px;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: 2px solid transparent;
+}
+
+.garage-action-btn.btn-buy {
+    background: linear-gradient(135deg, #ffd700, #ff9100);
+    color: #0a0e17;
+    border-color: #ffe082;
+    box-shadow: 0 6px 20px rgba(255, 145, 0, 0.5);
+}
+
+.garage-action-btn.btn-buy:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(255, 145, 0, 0.7);
+    filter: brightness(1.08);
+}
+
+.garage-action-btn.btn-equip {
+    background: linear-gradient(135deg, #00e5ff, #0077ff);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 119, 255, 0.5);
+}
+
+.garage-action-btn.btn-equip:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0, 119, 255, 0.7);
+    filter: brightness(1.1);
+}
+
+.garage-action-btn.btn-equipped {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+    border: 1.5px solid #2ed573;
+    cursor: default;
+    box-shadow: 0 0 15px rgba(46, 213, 115, 0.25);
+}
+
+.garage-action-btn.btn-locked {
+    background: rgba(255, 255, 255, 0.08);
+    color: #64748b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.garage-hints {
+    font-size: 0.72rem;
+    color: #64748b;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.garage-hints kbd {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.7rem;
+}
+
+/* Responsive queries */
+@media (max-width: 768px) {
+    .top-left-controls {
+        top: 14px;
+        left: 14px;
+    }
+
+    .top-garage-btn {
+        height: 44px;
+        padding: 0 14px;
+        font-size: 0.82rem;
+        border-radius: 16px;
+    }
+
+    .top-controls {
+        top: 14px;
+        right: 14px;
+        gap: 8px;
+    }
+
+    .wallet-badge {
+        height: 44px;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 680px) {
+    .garage-showcase {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .podium-stage {
+        height: 180px;
+    }
+
+    .garage-car-preview {
+        width: 80px;
+        height: 150px;
+    }
+
+    .garage-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .garage-price-tag {
+        align-items: center;
+    }
+
+    .garage-action-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 520px) {
+    .top-garage-text {
+        display: none;
+    }
+
+    .top-garage-btn {
+        padding: 0 12px;
+        border-radius: 14px;
+    }
+}

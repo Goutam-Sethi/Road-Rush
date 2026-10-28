@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="100%" height="100%">
+  <defs>
+    <!-- Matte Stealth Carbon & 24K Gold Gradients -->
+    <linearGradient id="sBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#121214" />
+      <stop offset="20%" stop-color="#24252a" />
+      <stop offset="50%" stop-color="#383a42" />
+      <stop offset="80%" stop-color="#24252a" />
+      <stop offset="100%" stop-color="#121214" />
+    </linearGradient>
+
+    <linearGradient id="sRoofGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c0d0f" />
+      <stop offset="50%" stop-color="#1b1c21" />
+      <stop offset="100%" stop-color="#090a0c" />
+    </linearGradient>
+
+    <linearGradient id="sGlassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#050507" />
+      <stop offset="35%" stop-color="#1a1b22" />
+      <stop offset="60%" stop-color="#101116" />
+      <stop offset="100%" stop-color="#050507" />
+    </linearGradient>
+
+    <linearGradient id="sGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd54f" />
+      <stop offset="50%" stop-color="#ffb300" />
+      <stop offset="100%" stop-color="#ff8f00" />
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="sGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Ground Drop Shadow with Golden Underglow -->
+  <ellipse cx="50" cy="108" rx="44" ry="78" fill="#ffb300" opacity="0.18" filter="url(#sGlow)" />
+  <ellipse cx="50" cy="108" rx="42" ry="76" fill="#000000" opacity="0.75" />
+
+  <!-- Tires -->
+  <rect x="7" y="38" width="13" height="34" rx="4" fill="#0a0a0c" />
+  <rect x="80" y="38" width="13" height="34" rx="4" fill="#0a0a0c" />
+  <rect x="6" y="132" width="14" height="36" rx="4" fill="#0a0a0c" />
+  <rect x="80" y="132" width="14" height="36" rx="4" fill="#0a0a0c" />
+
+  <!-- Tire Rims (Solid Gold Spoke Line) -->
+  <line x1="13" y1="42" x2="13" y2="68" stroke="#ffd54f" stroke-width="2.2" />
+  <line x1="87" y1="42" x2="87" y2="68" stroke="#ffd54f" stroke-width="2.2" />
+  <line x1="13" y1="136" x2="13" y2="164" stroke="#ffd54f" stroke-width="2.2" />
+  <line x1="87" y1="136" x2="87" y2="164" stroke="#ffd54f" stroke-width="2.2" />
+
+  <!-- Main Chassis / Outer Silhouette -->
+  <path d="M 28 16 
+           C 40 13, 60 13, 72 16 
+           C 84 19, 87 34, 88 52 
+           C 89 68, 86 85, 84 105 
+           C 87 122, 91 142, 90 166 
+           C 89 184, 81 192, 72 193 
+           C 60 194, 40 194, 28 193 
+           C 19 192, 11 184, 10 166 
+           C 9 142, 13 122, 16 105 
+           C 14 85, 11 68, 12 52 
+           C 13 34, 16 19, 28 16 Z" 
+        fill="url(#sBodyGrad)" stroke="#ffb300" stroke-width="1.2" />
+
+  <!-- 24K Gold Inlay Side Pin-stripes -->
+  <path d="M 24 30 L 18 100 L 15 160" fill="none" stroke="url(#sGoldGrad)" stroke-width="1.2" opacity="0.9" />
+  <path d="M 76 30 L 82 100 L 85 160" fill="none" stroke="url(#sGoldGrad)" stroke-width="1.2" opacity="0.9" />
+
+  <!-- Center Gold Arrow Stripe -->
+  <polygon points="50,18 54,60 50,65 46,60" fill="url(#sGoldGrad)" opacity="0.9" />
+
+  <!-- Aerodynamic Hood Indentations -->
+  <path d="M 34 26 Q 50 34 66 26 Q 50 31 34 26 Z" fill="#08080a" opacity="0.85" />
+  <path d="M 36 38 L 43 58 L 38 60 Z" fill="#08080a" />
+  <path d="M 64 38 L 57 58 L 62 60 Z" fill="#08080a" />
+
+  <!-- Side Mirrors (Gold tipped) -->
+  <path d="M 12 76 C 5 74, 4 82, 11 86 Z" fill="#ffb300" stroke="#000" stroke-width="0.8" />
+  <path d="M 88 76 C 95 74, 96 82, 89 86 Z" fill="#ffb300" stroke="#000" stroke-width="0.8" />
+
+  <!-- Front Windshield -->
+  <path d="M 24 66 
+           C 36 62, 64 62, 76 66 
+           C 79 78, 77 94, 73 103 
+           C 62 101, 38 101, 27 103 
+           C 23 94, 21 78, 24 66 Z" 
+        fill="url(#sGlassGrad)" stroke="#090a0d" stroke-width="1.5" />
+
+  <!-- Windshield Reflection Glint -->
+  <path d="M 28 68 Q 42 78 48 98 L 44 99 Q 38 80 26 70 Z" fill="#ffffff" opacity="0.25" />
+
+  <!-- Roof Section -->
+  <path d="M 27 103 
+           C 38 101, 62 101, 73 103 
+           C 74 116, 73 130, 71 141 
+           C 60 139, 40 139, 29 141 
+           C 27 130, 26 116, 27 103 Z" 
+        fill="url(#sRoofGrad)" />
+
+  <!-- Roof Central Gold Accent Rib -->
+  <rect x="47" y="103" width="6" height="37" fill="url(#sGoldGrad)" rx="1.5" />
+
+  <!-- Rear Window -->
+  <path d="M 29 141 
+           C 40 139, 60 139, 71 141 
+           C 72 153, 70 162, 67 167 
+           C 58 165, 42 165, 33 167 
+           C 30 162, 28 153, 29 141 Z" 
+        fill="url(#sGlassGrad)" stroke="#090a0d" stroke-width="1.5" />
+
+  <!-- Engine Cover Vents with Gold Edges -->
+  <line x1="38" y1="148" x2="62" y2="148" stroke="#ffb300" stroke-width="1.2" opacity="0.75" />
+  <line x1="39" y1="154" x2="61" y2="154" stroke="#ffb300" stroke-width="1.2" opacity="0.75" />
+  <line x1="41" y1="160" x2="59" y2="160" stroke="#ffb300" stroke-width="1.2" opacity="0.75" />
+
+  <!-- Luxury Carbon Hyper-Spoiler with Gold Endplates -->
+  <path d="M 11 176 L 89 176 L 86 189 L 14 189 Z" fill="#08080a" stroke="#000" stroke-width="1.2" />
+  <path d="M 14 178 L 86 178 L 84 182 L 16 182 Z" fill="url(#sGoldGrad)" />
+  <rect x="10" y="174" width="4" height="16" fill="#ffd54f" rx="1" />
+  <rect x="86" y="174" width="4" height="16" fill="#ffd54f" rx="1" />
+  <!-- Spoiler Mounts -->
+  <rect x="31" y="170" width="5" height="11" fill="#1b1c21" />
+  <rect x="64" y="170" width="5" height="11" fill="#1b1c21" />
+
+  <!-- Hyper Xenon Diamond Headlights -->
+  <path d="M 20 28 C 22 21, 28 17, 33 22 C 31 29, 24 35, 20 28 Z" fill="#ffffff" stroke="#ffd54f" stroke-width="1.2" filter="url(#sGlow)" />
+  <path d="M 80 28 C 78 21, 72 17, 67 22 C 69 29, 76 35, 80 28 Z" fill="#ffffff" stroke="#ffd54f" stroke-width="1.2" filter="url(#sGlow)" />
+
+  <!-- Rear Taillights (Full Gold/Red Horizon Bar) -->
+  <path d="M 17 190 L 83 190 L 82 194 L 18 194 Z" fill="#ff1744" filter="url(#sGlow)" />
+  <line x1="20" y1="192" x2="80" y2="192" stroke="#ffe082" stroke-width="1.5" />
+
+  <!-- Heavy Gold Twin Exhausts -->
+  <ellipse cx="38" cy="195" rx="3.5" ry="2" fill="#050505" stroke="#ffd54f" stroke-width="1.2" />
+  <ellipse cx="62" cy="195" rx="3.5" ry="2" fill="#050505" stroke="#ffd54f" stroke-width="1.2" />
+</svg>
